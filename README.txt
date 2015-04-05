@@ -44,6 +44,10 @@ Adding “hide” to any of those attributes will hide that element, including b
 
 **Insert Link here**
 
+= Can I add multiple product per shortcode? =
+
+Yep! [external_products id=“10,11,12,13,14,15”]
+
 == Screenshots ==
 
 1. This screen shot description corresponds to screenshot-1.(png|jpg|jpeg|gif). Note that the screenshot is taken from
