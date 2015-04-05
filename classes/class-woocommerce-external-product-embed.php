@@ -66,12 +66,12 @@ class Woocommerce_External_Product_Embed {
 
 	private function wcepe_set_external_product_link_transient( $external_product_id ) {
 
-		if ( false === ( $value = get_transient( 'external_product_link_' . $external_product_id ) ) ) {
-	    	set_transient( 'external_product_link_' . $external_product_id, 
+		if ( false === ( $value = get_transient( 'wcepe_external_product_link_' . $external_product_id ) ) ) {
+	    	set_transient( 'wcepe_external_product_link_' . $external_product_id, 
 	    	$this->wcepe_get_external_product_link( $external_product_id ), $this->wcepe_get_transient_time() );
 		}
 
-		return get_transient( 'external_product_link_' . $external_product_id );
+		return get_transient( 'wcepe_external_product_link_' . $external_product_id );
 	}
 
 
@@ -87,12 +87,12 @@ class Woocommerce_External_Product_Embed {
 
 	private function wcepe_set_external_product_image_transient( $external_product_id ) {
 
-		if ( false === ( $value = get_transient( 'external_product_image_' . $external_product_id ) ) ) {
-	    	set_transient( 'external_product_image_' . $external_product_id, 
+		if ( false === ( $value = get_transient( 'wcepe_external_product_image_' . $external_product_id ) ) ) {
+	    	set_transient( 'wcepe_external_product_image_' . $external_product_id, 
 	    	$this->wcepe_get_external_product_image( $external_product_id ), $this->wcepe_get_transient_time() );
 		}
 
-		return get_transient( 'external_product_image_' . $external_product_id );
+		return get_transient( 'wcepe_external_product_image_' . $external_product_id );
 	}
 
 	private function wcepe_display_external_product_image( $show_image, $external_product_id ) {
@@ -115,12 +115,12 @@ class Woocommerce_External_Product_Embed {
 
 	private function wcepe_set_external_product_title_transient( $external_product_id ) {
 
-		if ( false === ( $value = get_transient( 'external_product_title_' . $external_product_id ) ) ) {
-	    	set_transient( 'external_product_title_' . $external_product_id, 
+		if ( false === ( $value = get_transient( 'wcepe_external_product_title_' . $external_product_id ) ) ) {
+	    	set_transient( 'wcepe_external_product_title_' . $external_product_id, 
 	    	$this->wcepe_get_external_product_title( $external_product_id ), $this->wcepe_get_transient_time() );
 		}
 
-		return get_transient( 'external_product_title_' . $external_product_id );
+		return get_transient( 'wcepe_external_product_title_' . $external_product_id );
 	}
 
 	private function wcepe_display_external_product_title( $show_title, $external_product_id ) {
@@ -143,12 +143,12 @@ class Woocommerce_External_Product_Embed {
 
 	private function wcepe_set_external_product_price_transient( $external_product_id ) {
 
-		if ( false === ( $value = get_transient( 'external_product_price_' . $external_product_id ) ) ) {
-	    	set_transient( 'external_product_price_' . $external_product_id, 
+		if ( false === ( $value = get_transient( 'wcepe_external_product_price_' . $external_product_id ) ) ) {
+	    	set_transient( 'wcepe_external_product_price_' . $external_product_id, 
 	    	$this->wcepe_get_external_product_price( $external_product_id ), $this->wcepe_get_transient_time() );
 		}
 
-		return get_transient( 'external_product_price_' . $external_product_id );
+		return get_transient( 'wcepe_external_product_price_' . $external_product_id );
 	}
 
 	private function wcepe_display_external_product_price( $show_price, $external_product_id ) {
@@ -171,12 +171,12 @@ class Woocommerce_External_Product_Embed {
 
 	private function wcepe_set_external_product_rating_transient( $external_product_id ) {
 
-		if ( false === ( $value = get_transient( 'external_product_rating_' . $external_product_id ) ) ) {
-	    	set_transient( 'external_product_rating_' . $external_product_id, 
+		if ( false === ( $value = get_transient( 'wcepe_external_product_rating_' . $external_product_id ) ) ) {
+	    	set_transient( 'wcepe_external_product_rating_' . $external_product_id, 
 	    	$this->wcepe_get_external_product_rating( $external_product_id ), $this->wcepe_get_transient_time() );
 		}
 
-		return get_transient( 'external_product_rating_' . $external_product_id );
+		return get_transient( 'wcepe_external_product_rating_' . $external_product_id );
 	}
 
 	private function wcepe_display_external_product_rating( $show_rating, $external_product_id ) {

@@ -146,7 +146,7 @@ class Woocommerce_External_Product_Embed_Admin {
 		global $wpdb;
 	    $sql = "SELECT `option_name` AS `name`, `option_value` AS `value`
 				FROM  $wpdb->options
-				WHERE `option_name` LIKE '%transient_external_product_%'
+				WHERE `option_name` LIKE '%transient_wcepe_external_product_%'
 				ORDER BY `option_name`";
 
 	    $results = $wpdb->get_results( $sql );
@@ -198,7 +198,7 @@ class Woocommerce_External_Product_Embed_Admin {
 		global $wpdb;
 	        $sql = "SELECT `option_name` AS `name`, `option_value` AS `value`
 				FROM  $wpdb->options
-				WHERE `option_name` LIKE '%transient_timeout_external_product_%'
+				WHERE `option_name` LIKE '%transient_timeout_wcepe_external_product_%'
 				ORDER BY `option_name`";
 
 	    $results = $wpdb->get_results( $sql );
