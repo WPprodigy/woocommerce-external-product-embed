@@ -10,8 +10,12 @@ class Woocommerce_External_Product_Embed {
 	 */
 	public function __construct () {
 		require_once 'class-woocommerce-external-product-embed-admin.php';
+
         wp_register_style( 'wcepe_styles', plugins_url('../assets/styles.css', __FILE__) );
 		wp_enqueue_style( 'wcepe_styles' );
+
+		wp_enqueue_style( 'wcepe_font-awesome', '//netdna.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css' );
+
 		add_shortcode( 'external_product', array( $this, 'wcepe_external_product_shortcode' ) );
 		add_shortcode( 'external_products', array( $this, 'wcepe_external_products_shortcode' ) );
 	} // End __construct()

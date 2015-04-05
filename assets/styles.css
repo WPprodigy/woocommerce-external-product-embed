@@ -30,6 +30,8 @@ ul.external_products li.external_product{
 .external_product_wrap .external_product_rating {
 	font-family: "fontawesome";
 	position: relative;
+	font-size: 15px;
+	margin: 0 0 23px 0;
 }
 
 .external_product_wrap .external_product_rating:before {
@@ -37,7 +39,7 @@ ul.external_products li.external_product{
 	color: #adb9bc;
 	position: absolute;
 	top: 0;
-	left: 67px;
+	left: 75px;
 }
 
 .external_product_wrap .external_product_rating span:before {
@@ -53,6 +55,6 @@ ul.external_products li.external_product{
 	position: absolute;
 	/*width: 80%;*/
 	top: 0;
-	left: 67px;
+	left: 75px;
 	height: 25px;
 }
