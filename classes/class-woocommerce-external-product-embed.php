@@ -228,17 +228,28 @@ class Woocommerce_External_Product_Embed {
 			), $atts )
 		);
 
-		$content  = '<div class="external_product">';
-		$content .= $this->wcepe_display_external_product_image( $image, $id );
-		$content .= $this->wcepe_display_external_product_title( $title, $id );
-		$content .= $this->wcepe_display_external_product_rating( $rating, $id );
-		$content .= $this->wcepe_display_external_product_price( $price, $id );
-		$content .= $this->wcepe_display_external_product_button( $button, $id );
-		$content .= '</div>';
-
 		if ($id == '') {
 			$content = "Please enter an ID";
+		} else {
+			//$ids = array($id);
+			$ids = explode(',', $id);
 		}
+
+		$content  = '<div class="external_product_wrap"><ul class="external_products">';
+
+		foreach ( $ids as $id ) {
+
+			$content .= '<li class="external_product">';
+			$content .= $this->wcepe_display_external_product_image( $image, $id );
+			$content .= $this->wcepe_display_external_product_title( $title, $id );
+			$content .= $this->wcepe_display_external_product_rating( $rating, $id );
+			$content .= $this->wcepe_display_external_product_price( $price, $id );
+			$content .= $this->wcepe_display_external_product_button( $button, $id );
+			$content .= '</li>';
+
+		}
+
+		$content .= '</ul></div>';
 
 		return $content;
 
