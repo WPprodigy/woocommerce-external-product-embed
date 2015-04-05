@@ -13,6 +13,7 @@ class Woocommerce_External_Product_Embed {
         wp_register_style( 'wcepe_styles', plugins_url('../assets/styles.css', __FILE__) );
 		wp_enqueue_style( 'wcepe_styles' );
 		add_shortcode( 'external_product', array( $this, 'wcepe_external_product_shortcode' ) );
+		add_shortcode( 'external_products', array( $this, 'wcepe_external_products_shortcode' ) );
 	} // End __construct()
 
 
@@ -216,6 +217,48 @@ class Woocommerce_External_Product_Embed {
 	/* Create Shortcode */
 
 	public function wcepe_external_product_shortcode( $atts ) {
+
+		extract( shortcode_atts(
+			array(
+				'id'     => '',
+				'image'  => 'show',
+				'title'  => 'show',
+				'price'  => 'show',
+				'rating' => 'show',
+				'button' => 'View Product',
+			), $atts )
+		);
+
+		if ($id == '') {
+			$content = "Please enter an ID";
+		} else {
+			//$ids = array($id);
+			$ids = explode(',', $id);
+		}
+
+		$content  = '<div class="external_product_wrap"><ul class="external_products">';
+
+		foreach ( $ids as $id ) {
+
+			$content .= '<li class="external_product">';
+			$content .= $this->wcepe_display_external_product_image( $image, $id );
+			$content .= $this->wcepe_display_external_product_title( $title, $id );
+			$content .= $this->wcepe_display_external_product_rating( $rating, $id );
+			$content .= $this->wcepe_display_external_product_price( $price, $id );
+			$content .= $this->wcepe_display_external_product_button( $button, $id );
+			$content .= '</li>';
+
+		}
+
+		$content .= '</ul></div>';
+
+		return $content;
+
+	}
+
+	/* Create Shortcode for plural spelling */
+
+	public function wcepe_external_products_shortcode( $atts ) {
 
 		extract( shortcode_atts(
 			array(
