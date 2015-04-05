@@ -87,7 +87,7 @@ class Woocommerce_External_Product_Embed {
 
 	private function wcepe_set_external_product_image_transient( $external_product_id ) {
 
-		if ( false === ( $value = get_transient( 'wcepe_external_product_image_' . $external_product_id ) ) ) {
+		if ( false === ( $value = get_transient( 'wcepe_external_product_image_' . $external_product_id ) ) &&  $this->wcepe_get_external_product_image( $external_product_id ) != '' ) {
 	    	set_transient( 'wcepe_external_product_image_' . $external_product_id, 
 	    	$this->wcepe_get_external_product_image( $external_product_id ), $this->wcepe_get_transient_time() );
 		}
@@ -97,7 +97,7 @@ class Woocommerce_External_Product_Embed {
 
 	private function wcepe_display_external_product_image( $show_image, $external_product_id ) {
 
-		if ( $show_image == 'show' ) {
+		if ( $show_image == 'show' &&  $this->wcepe_set_external_product_image_transient( $external_product_id ) != '' ) {
 			return '<a href=' . $this->wcepe_set_external_product_link_transient( $external_product_id ) . ' target="_blank"><img class="external_product_image" src=' . $this->wcepe_set_external_product_image_transient( $external_product_id ) . ' ></a>';
 		} 
 	}
@@ -115,7 +115,7 @@ class Woocommerce_External_Product_Embed {
 
 	private function wcepe_set_external_product_title_transient( $external_product_id ) {
 
-		if ( false === ( $value = get_transient( 'wcepe_external_product_title_' . $external_product_id ) ) ) {
+		if ( false === ( $value = get_transient( 'wcepe_external_product_title_' . $external_product_id ) ) &&  $this->wcepe_get_external_product_title( $external_product_id ) != '' ) {
 	    	set_transient( 'wcepe_external_product_title_' . $external_product_id, 
 	    	$this->wcepe_get_external_product_title( $external_product_id ), $this->wcepe_get_transient_time() );
 		}
@@ -125,7 +125,7 @@ class Woocommerce_External_Product_Embed {
 
 	private function wcepe_display_external_product_title( $show_title, $external_product_id ) {
 
-		if ( $show_title == 'show' ) {
+		if ( $show_title == 'show' &&  $this->wcepe_set_external_product_title_transient( $external_product_id ) != '' ) {
 			return '<h3 class="external_product_title"><a href=' . $this->wcepe_set_external_product_link_transient( $external_product_id ) . ' target="_blank">' . $this->wcepe_set_external_product_title_transient( $external_product_id ) . '</a></h3>';
 		} 
 	}
@@ -143,7 +143,7 @@ class Woocommerce_External_Product_Embed {
 
 	private function wcepe_set_external_product_price_transient( $external_product_id ) {
 
-		if ( false === ( $value = get_transient( 'wcepe_external_product_price_' . $external_product_id ) ) ) {
+		if ( false === ( $value = get_transient( 'wcepe_external_product_price_' . $external_product_id ) ) &&  $this->wcepe_get_external_product_price( $external_product_id ) != '' ) {
 	    	set_transient( 'wcepe_external_product_price_' . $external_product_id, 
 	    	$this->wcepe_get_external_product_price( $external_product_id ), $this->wcepe_get_transient_time() );
 		}
@@ -153,7 +153,7 @@ class Woocommerce_External_Product_Embed {
 
 	private function wcepe_display_external_product_price( $show_price, $external_product_id ) {
 
-		if ( $show_price == 'show' ) {
+		if ( $show_price == 'show' &&  $this->wcepe_set_external_product_price_transient( $external_product_id ) != '' ) {
 			return '<span class="external_product_price">' . $this->wcepe_set_external_product_price_transient( $external_product_id ) . '</span>';
 		} 
 	}
@@ -171,7 +171,7 @@ class Woocommerce_External_Product_Embed {
 
 	private function wcepe_set_external_product_rating_transient( $external_product_id ) {
 
-		if ( false === ( $value = get_transient( 'wcepe_external_product_rating_' . $external_product_id ) ) ) {
+		if ( false === ( $value = get_transient( 'wcepe_external_product_rating_' . $external_product_id ) ) &&  $this->wcepe_get_external_product_rating( $external_product_id ) != '' ) {
 	    	set_transient( 'wcepe_external_product_rating_' . $external_product_id, 
 	    	$this->wcepe_get_external_product_rating( $external_product_id ), $this->wcepe_get_transient_time() );
 		}
@@ -197,7 +197,7 @@ class Woocommerce_External_Product_Embed {
 			$percent = '0%'; 
 		}
 
-		if ( $show_rating == 'show' ) {
+		if ( $show_rating == 'show' &&  $this->wcepe_set_external_product_rating_transient( $external_product_id ) != '' ) {
 			return '<p class="external_product_rating"><span style="width:' . $percent . '" class=' . $this->wcepe_set_external_product_rating_transient( $external_product_id ) . '></span></p>';
 		} 
 	}
