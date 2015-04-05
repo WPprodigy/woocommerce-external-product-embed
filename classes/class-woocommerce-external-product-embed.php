@@ -233,28 +233,61 @@ class Woocommerce_External_Product_Embed {
 			), $atts )
 		);
 
-		if ($id == '') {
-			$content = "Please enter an ID";
-		} else {
-			//$ids = array($id);
+		// Check to see if there is a valid ID
+		$check_for_valid_product = true;
+		if ( $id != '' ) {
+
+			$id_check = explode(',', $id);
+			$id_count = count($id_check);
+
+			if ( $id_count == 1 ) {
+
+				foreach ( $id_check as $id_test ) {
+					$check = $this->wcepe_set_external_product_link_transient( $id_test );
+
+					if ( $check == '' ) {
+						$check_for_valid_product = false;
+					} 
+				}
+			}
+		}
+
+
+		// Create Product Data
+		if ($id != '' && $check_for_valid_product == true ) {
+
 			$ids = explode(',', $id);
+
+			$content  = '<div class="external_product_wrap"><ul class="external_products">';
+
+			foreach ( $ids as $id ) {
+				if ( $this->wcepe_set_external_product_link_transient( $id ) != '') {
+					$content .= '<li class="external_product">';
+				}
+				$content .= $this->wcepe_display_external_product_image( $image, $id );
+				$content .= $this->wcepe_display_external_product_title( $title, $id );
+				$content .= $this->wcepe_display_external_product_rating( $rating, $id );
+				$content .= $this->wcepe_display_external_product_price( $price, $id );
+				$content .= $this->wcepe_display_external_product_button( $button, $id );
+				if ( $this->wcepe_set_external_product_link_transient( $id ) != '') {
+					$content .= '</li>';
+				}
+
+			}
+
+			$content .= '</ul></div>';
+			
+
+		} else if ( $check_for_valid_product == false ) {
+
+			$content = "<b>Please enter a valid ID to use this shortcode</b>";
+
+		} else {
+
+			$content = "<b>Please enter an ID to use this shortcode</b>";
+
 		}
 
-		$content  = '<div class="external_product_wrap"><ul class="external_products">';
-
-		foreach ( $ids as $id ) {
-
-			$content .= '<li class="external_product">';
-			$content .= $this->wcepe_display_external_product_image( $image, $id );
-			$content .= $this->wcepe_display_external_product_title( $title, $id );
-			$content .= $this->wcepe_display_external_product_rating( $rating, $id );
-			$content .= $this->wcepe_display_external_product_price( $price, $id );
-			$content .= $this->wcepe_display_external_product_button( $button, $id );
-			$content .= '</li>';
-
-		}
-
-		$content .= '</ul></div>';
 
 		return $content;
 
@@ -275,28 +308,58 @@ class Woocommerce_External_Product_Embed {
 			), $atts )
 		);
 
-		if ($id == '') {
-			$content = "Please enter an ID";
-		} else {
-			//$ids = array($id);
+		// Check to see if there is a valid ID
+		$check_for_valid_product = true;
+		if ( $id != '' ) {
+
+			$id_check = explode(',', $id);
+			$id_count = count($id_check);
+
+			if ( $id_count == 1 ) {
+
+				foreach ( $id_check as $id_test ) {
+					$check = $this->wcepe_set_external_product_link_transient( $id_test );
+
+					if ( $check == '' ) {
+						$check_for_valid_product = false;
+					} 
+				}
+			}
+		}
+
+
+		// Create Product Data
+		if ($id != '' && $check_for_valid_product == true ) {
+
 			$ids = explode(',', $id);
+
+			$content  = '<div class="external_product_wrap"><ul class="external_products">';
+
+			foreach ( $ids as $id ) {
+
+				$content .= '<li class="external_product">';
+				$content .= $this->wcepe_display_external_product_image( $image, $id );
+				$content .= $this->wcepe_display_external_product_title( $title, $id );
+				$content .= $this->wcepe_display_external_product_rating( $rating, $id );
+				$content .= $this->wcepe_display_external_product_price( $price, $id );
+				$content .= $this->wcepe_display_external_product_button( $button, $id );
+				$content .= '</li>';
+
+			}
+
+			$content .= '</ul></div>';
+			
+
+		} else if ( $check_for_valid_product == false ) {
+
+			$content = "<b>Please enter a valid ID to use this shortcode</b>";
+
+		} else {
+
+			$content = "<b>Please enter an ID to use this shortcode</b>";
+
 		}
 
-		$content  = '<div class="external_product_wrap"><ul class="external_products">';
-
-		foreach ( $ids as $id ) {
-
-			$content .= '<li class="external_product">';
-			$content .= $this->wcepe_display_external_product_image( $image, $id );
-			$content .= $this->wcepe_display_external_product_title( $title, $id );
-			$content .= $this->wcepe_display_external_product_rating( $rating, $id );
-			$content .= $this->wcepe_display_external_product_price( $price, $id );
-			$content .= $this->wcepe_display_external_product_button( $button, $id );
-			$content .= '</li>';
-
-		}
-
-		$content .= '</ul></div>';
 
 		return $content;
 
