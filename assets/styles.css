@@ -9,13 +9,13 @@
 
 ul.external_products li.external_product{ 
 	text-align: center;
-	width: 220px;
+	width: 200px;
 	display: inline-block;
-	margin: 10px 0;
+	margin: 10px 10px;
 }
 
 .external_product_wrap .external_product_image {
-	width: 200px;
+	width: auto;
 }
 
 .external_product_wrap .external_product_title {
@@ -39,7 +39,7 @@ ul.external_products li.external_product{
 	color: #adb9bc;
 	position: absolute;
 	top: 0;
-	left: 75px;
+	left: 66px;
 }
 
 .external_product_wrap .external_product_rating span:before {
@@ -53,8 +53,7 @@ ul.external_products li.external_product{
 .external_product_wrap .external_product_rating span {
 	overflow: hidden;
 	position: absolute;
-	/*width: 80%;*/
 	top: 0;
-	left: 75px;
+	left: 66px;
 	height: 25px;
 }
