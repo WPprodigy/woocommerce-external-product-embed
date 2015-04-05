@@ -228,7 +228,7 @@ class Woocommerce_External_Product_Embed_Admin {
 
 	function wcepe_settings_section_callback(  ) { 
 
-		echo __( 'You can find instructions here: ', 'wordpress' );
+		echo __( 'You can find instructions here:  <a href="http://docs.woothemes.com/document/woocommerce-rest-api/" target="_blank">Generating API keys</a>', 'wordpress' );
 
 	}
 
