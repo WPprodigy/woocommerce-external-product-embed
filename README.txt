@@ -17,14 +17,14 @@ A few notes about this plugin:
 
 *   It requires an admin account for the website running WooCommerce
 *   It must make an authorized connection to the external site
-*   And this plugin stores transients in the wp-options table
+*   This plugin stores transients in the wp-options table of your database
 
 == Installation ==
 
-1. Upload `woocommerce-external-product-embed` to the `/wp-content/plugins/` directory
-1. Activate the plugin through the 'Plugins' menu in WordPress
-1. Go to Settings > WooCommerce External Products
-1. Add in the credentials to connect to external site
+1. Upload `woocommerce-external-product-embed` to the `/wp-content/plugins/` directory of the site you want to display the products on.
+2. Activate the plugin through the 'Plugins' menu in WordPress
+3. Go to Settings > WooCommerce External Products
+4. Add in the credentials to connect to external site
 
 == Frequently Asked Questions ==
 
