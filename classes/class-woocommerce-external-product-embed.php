@@ -158,13 +158,13 @@ class Woocommerce_External_Product_Embed {
 		$number = $this->set_external_product_rating_transient( $external_product_id );
 
 		if ( $number >= '5' ) {
-			$percent = '100px'; 
+			$percent = '99px'; 
 		} else if ( $number >= '4' ) {
-			$percent = '78px'; 
+			$percent = '77px'; 
 		} else if ( $number >= '3' ) {
 			$percent = '58px'; 
 		} else if ( $number >= '2' ) {
-			$percent = '40px'; 
+			$percent = '38px'; 
 		} else if ( $number >= '1' ) {
 			$percent = '20px'; 
 		} else if ( $number <= '.9' ) {
