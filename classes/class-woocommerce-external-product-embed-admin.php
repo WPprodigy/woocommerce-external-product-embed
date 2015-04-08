@@ -221,4 +221,4 @@ class Woocommerce_External_Product_Embed_Admin {
 
 } // End Class
 
-$Woocommerce_External_Product_Embed_Admin = new Woocommerce_External_Product_Embed_Admin();
+new Woocommerce_External_Product_Embed_Admin();

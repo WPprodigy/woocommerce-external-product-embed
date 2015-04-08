@@ -263,4 +263,4 @@ class Woocommerce_External_Product_Embed {
 
 } // End Class
 
-$Woocommerce_External_Product_Embed = new Woocommerce_External_Product_Embed();
+new Woocommerce_External_Product_Embed();
