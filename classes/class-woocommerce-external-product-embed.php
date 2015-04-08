@@ -11,7 +11,7 @@ class Woocommerce_External_Product_Embed {
         wp_register_style( 'wcepe_styles', plugins_url('../assets/styles.css', __FILE__) );
 		wp_enqueue_style( 'wcepe_styles' );
 
-		wp_enqueue_style( 'wcepe_font-awesome', '//netdna.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css' );
+		wp_enqueue_style( 'dashicons' );
 
 		add_shortcode( 'external_product', array( $this, 'external_product_shortcode' ) );
 	} 
@@ -158,17 +158,17 @@ class Woocommerce_External_Product_Embed {
 		$number = $this->set_external_product_rating_transient( $external_product_id );
 
 		if ( $number >= '5' ) {
-			$percent = '30%'; 
+			$percent = '100px'; 
 		} else if ( $number >= '4' ) {
-			$percent = '24%'; 
+			$percent = '78px'; 
 		} else if ( $number >= '3' ) {
-			$percent = '18%'; 
+			$percent = '58px'; 
 		} else if ( $number >= '2' ) {
-			$percent = '12%'; 
+			$percent = '40px'; 
 		} else if ( $number >= '1' ) {
-			$percent = '5%'; 
+			$percent = '20px'; 
 		} else if ( $number <= '.9' ) {
-			$percent = '0%'; 
+			$percent = '0'; 
 		}
 
 		return $percent;
