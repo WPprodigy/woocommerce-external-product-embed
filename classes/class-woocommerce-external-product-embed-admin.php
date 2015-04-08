@@ -8,6 +8,7 @@ class Woocommerce_External_Product_Embed_Admin {
 	public function __construct () {
 		add_action( 'admin_menu', array( $this, 'wcepe_add_admin_menu' ) );
 		add_action( 'admin_init', array( $this, 'wcepe_settings_init' ) );
+		add_action( 'admin_notices', array( $this, 'display_success_message' ) );
 	}
 
 	public function wcepe_add_admin_menu(  ) { 
@@ -112,7 +113,7 @@ class Woocommerce_External_Product_Embed_Admin {
 
 				$this->delete_external_product_transients( );
 
-				echo '<div class="updated"><p>Transients Cleared</p></div>';
+				//echo '<div class="updated"><p>Transients Cleared</p></div>';
 			}
 		}
 	}
@@ -156,7 +157,7 @@ class Woocommerce_External_Product_Embed_Admin {
 
 				$this->delete_external_expired_product_transients();
 
-				echo '<div class="updated"><p>Expired Transients Cleared</p></div>';
+				//echo '<div class="updated"><p>Expired Transients Cleared</p></div>';
 			}
 		}
 	}
@@ -189,7 +190,16 @@ class Woocommerce_External_Product_Embed_Admin {
 		}
 	}
 
+	function display_success_message() {
+		if ( ! empty( $_GET['action'] && $_GET['action'] == 'clear_transients' ) ) {
+			echo '<div class="updated"><p>Transients Cleared</p></div>';
+		} else if ( ! empty( $_GET['action'] && $_GET['action'] == 'clear_expired_transients' ) ) {
+			echo '<div class="updated"><p>Expired Transients Cleared</p></div>';
+		}
+	}
+
 	function wcepe_settings_section_callback(  ) { 
+		//echo $this->display_success_message();
 		echo __( 'You can find instructions here:  <a href="http://docs.woothemes.com/document/woocommerce-rest-api/" target="_blank">Generating API keys</a>', 'wordpress' );
 	}
 
