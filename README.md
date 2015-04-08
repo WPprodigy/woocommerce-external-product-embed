@@ -40,8 +40,4 @@ Adding “hide” to any of those attributes will hide that element, including t
 
 #### Can I add multiple products per shortcode?
 
-<<<<<<< HEAD
 Yep! `[external_product id=“10,11,12,13,14,15”]`
-=======
-Yep! [external_products id=“10,11,12,13,14,15”]
->>>>>>> 774cb6a8fb9db12106ccf768c391382f7b2f01c3
