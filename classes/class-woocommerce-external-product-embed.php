@@ -5,11 +5,6 @@ if ( ! defined( 'ABSPATH' ) ) {
 
 class Woocommerce_External_Product_Embed {
 
-	/**
-	 * Constructor function.
-	 * @access  public
-	 * @since   1.0.0
-	 */
 	public function __construct () {
 		require_once 'class-woocommerce-external-product-embed-admin.php';
 
@@ -18,181 +13,149 @@ class Woocommerce_External_Product_Embed {
 
 		wp_enqueue_style( 'wcepe_font-awesome', '//netdna.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css' );
 
-		add_shortcode( 'external_product', array( $this, 'wcepe_external_product_shortcode' ) );
-		add_shortcode( 'external_products', array( $this, 'wcepe_external_products_shortcode' ) );
-	} // End __construct()
+		add_shortcode( 'external_product', array( $this, 'external_product_shortcode' ) );
+	} 
 
-
-	/**
-     * Get API Connection info
-     * @access  private
-     * @since   1.0.0
-     */
-	private function wcepe_store_api_info() {
-
-
+	private function store_api_info() {
 		if ( ! class_exists( "WC_API_Client" ) ) {
 			require_once 'class-wc-api-client.php';
 		}
-	
-		// require_once 'classes/class-wc-external-product-embed-admin.php';
 
-		$options = get_option( 'wcepe_settings' );
-
+		$options         = get_option( 'wcepe_settings' );
 		$consumer_key    = $options['wcepe_text_field_0'];
 		$consumer_secret = $options['wcepe_text_field_1'];
 		$store_url       = $options['wcepe_text_field_2'];
 
 		$wc_api = new WC_API_Client( $consumer_key, $consumer_secret, $store_url );
-
 		return $wc_api;
 	}
 
-	/**
-     * Get transient's set time
-     * @access  public
-     * @since   1.0.0
-     */
-	public function wcepe_get_transient_time() {
+	public function get_transient_time() {
 		$options = get_option( 'wcepe_settings' );
-		$time = $options['wcepe_text_field_3'];
+		$time    = $options['wcepe_text_field_3'];
 
-		if ($time == '') {
+		if ( $time == '' ) {
 			$time = '86400';
 		}
 
 		return $time;
 	}
 
-
 	/* Get and Return Link */
 
-	private function wcepe_get_external_product_link( $external_product_id ) {
-		$wc_api = $this->wcepe_store_api_info();
+	private function get_external_product_link( $external_product_id ) {
+		$wc_api   = $this->store_api_info();
 		$external = $wc_api->get_product( $external_product_id );
-		$link  = $external->product->permalink;
+		$link     = $external->product->permalink;
 
 		return $link;
 	}
 
-	private function wcepe_set_external_product_link_transient( $external_product_id ) {
-
+	private function set_external_product_link_transient( $external_product_id ) {
 		if ( false === ( $value = get_transient( 'wcepe_external_product_link_' . $external_product_id ) ) ) {
 	    	set_transient( 'wcepe_external_product_link_' . $external_product_id, 
-	    	$this->wcepe_get_external_product_link( $external_product_id ), $this->wcepe_get_transient_time() );
+	    	$this->get_external_product_link( $external_product_id ), $this->get_transient_time() );
 		}
 
 		return get_transient( 'wcepe_external_product_link_' . $external_product_id );
 	}
 
-
 	/* Get and Display Image */
 
-	private function wcepe_get_external_product_image( $external_product_id ) {
-		$wc_api = $this->wcepe_store_api_info();
+	private function get_external_product_image( $external_product_id ) {
+		$wc_api   = $this->store_api_info();
 		$external = $wc_api->get_product( $external_product_id );
-		$image = $external->product->images[0]->src;
+		$image    = $external->product->images[0]->src;
 
 		return $image;
 	}
 
-	private function wcepe_set_external_product_image_transient( $external_product_id ) {
-
+	private function set_external_product_image_transient( $external_product_id ) {
 		if ( false === ( $value = get_transient( 'wcepe_external_product_image_' . $external_product_id ) ) ) {
 	    	set_transient( 'wcepe_external_product_image_' . $external_product_id, 
-	    	$this->wcepe_get_external_product_image( $external_product_id ), $this->wcepe_get_transient_time() );
+	    	$this->get_external_product_image( $external_product_id ), $this->get_transient_time() );
 		}
 
 		return get_transient( 'wcepe_external_product_image_' . $external_product_id );
 	}
 
-	private function wcepe_display_external_product_image( $show_image, $external_product_id ) {
-
-		if ( $show_image == 'show' &&  $this->wcepe_set_external_product_image_transient( $external_product_id ) != '' ) {
-			return '<a href=' . $this->wcepe_set_external_product_link_transient( $external_product_id ) . ' target="_blank"><img class="external_product_image" src=' . $this->wcepe_set_external_product_image_transient( $external_product_id ) . ' ></a>';
+	private function display_external_product_image( $show_image, $external_product_id ) {
+		if ( $show_image == 'show' &&  $this->set_external_product_image_transient( $external_product_id ) != '' ) {
+			return '<a href=' . $this->set_external_product_link_transient( $external_product_id ) . ' target="_blank"><img class="wcepe_external_product_image" src=' . $this->set_external_product_image_transient( $external_product_id ) . ' ></a>';
 		} 
 	}
 
-
 	/* Get and Display Title */
 
-	private function wcepe_get_external_product_title( $external_product_id ) {
-		$wc_api = $this->wcepe_store_api_info();
+	private function get_external_product_title( $external_product_id ) {
+		$wc_api   = $this->store_api_info();
 		$external = $wc_api->get_product( $external_product_id );
-		$title = $external->product->title;
+		$title    = $external->product->title;
 
 		return $title;
 	}
 
-	private function wcepe_set_external_product_title_transient( $external_product_id ) {
-
+	private function set_external_product_title_transient( $external_product_id ) {
 		if ( false === ( $value = get_transient( 'wcepe_external_product_title_' . $external_product_id ) ) ) {
 	    	set_transient( 'wcepe_external_product_title_' . $external_product_id, 
-	    	$this->wcepe_get_external_product_title( $external_product_id ), $this->wcepe_get_transient_time() );
+	    	$this->get_external_product_title( $external_product_id ), $this->get_transient_time() );
 		}
 
 		return get_transient( 'wcepe_external_product_title_' . $external_product_id );
 	}
 
-	private function wcepe_display_external_product_title( $show_title, $external_product_id ) {
-
-		if ( $show_title == 'show' &&  $this->wcepe_set_external_product_title_transient( $external_product_id ) != '' ) {
-			return '<h3 class="external_product_title"><a href=' . $this->wcepe_set_external_product_link_transient( $external_product_id ) . ' target="_blank">' . $this->wcepe_set_external_product_title_transient( $external_product_id ) . '</a></h3>';
+	private function display_external_product_title( $show_title, $external_product_id ) {
+		if ( $show_title == 'show' &&  $this->set_external_product_title_transient( $external_product_id ) != '' ) {
+			return '<h3 class="wcepe_external_product_title"><a href=' . $this->set_external_product_link_transient( $external_product_id ) . ' target="_blank">' . $this->set_external_product_title_transient( $external_product_id ) . '</a></h3>';
 		} 
 	}
 
-
 	/* Get and Display Price */
 
-	private function wcepe_get_external_product_price( $external_product_id ) {
-		$wc_api = $this->wcepe_store_api_info();
+	private function get_external_product_price( $external_product_id ) {
+		$wc_api   = $this->store_api_info();
 		$external = $wc_api->get_product( $external_product_id );
-		$price = $external->product->price_html;
+		$price    = $external->product->price_html;
 
 		return $price;
 	}
 
-	private function wcepe_set_external_product_price_transient( $external_product_id ) {
-
+	private function set_external_product_price_transient( $external_product_id ) {
 		if ( false === ( $value = get_transient( 'wcepe_external_product_price_' . $external_product_id ) ) ) {
 	    	set_transient( 'wcepe_external_product_price_' . $external_product_id, 
-	    	$this->wcepe_get_external_product_price( $external_product_id ), $this->wcepe_get_transient_time() );
+	    	$this->get_external_product_price( $external_product_id ), $this->get_transient_time() );
 		}
 
 		return get_transient( 'wcepe_external_product_price_' . $external_product_id );
 	}
 
-	private function wcepe_display_external_product_price( $show_price, $external_product_id ) {
-
-		if ( $show_price == 'show' &&  $this->wcepe_set_external_product_price_transient( $external_product_id ) != '' ) {
-			return '<span class="external_product_price">' . $this->wcepe_set_external_product_price_transient( $external_product_id ) . '</span>';
+	private function display_external_product_price( $show_price, $external_product_id ) {
+		if ( $show_price == 'show' &&  $this->set_external_product_price_transient( $external_product_id ) != '' ) {
+			return '<span class="wcepe_external_product_price">' . $this->set_external_product_price_transient( $external_product_id ) . '</span>';
 		} 
 	}
 
-
 	/* Get and Display Rating */
 
-	private function wcepe_get_external_product_rating( $external_product_id ) {
-		$wc_api = $this->wcepe_store_api_info();
+	private function get_external_product_rating( $external_product_id ) {
+		$wc_api   = $this->store_api_info();
 		$external = $wc_api->get_product( $external_product_id );
-		$rating = $external->product->average_rating;
+		$rating   = $external->product->average_rating;
 
 		return $rating;
 	}
 
-	private function wcepe_set_external_product_rating_transient( $external_product_id ) {
-
+	private function set_external_product_rating_transient( $external_product_id ) {
 		if ( false === ( $value = get_transient( 'wcepe_external_product_rating_' . $external_product_id ) ) ) {
 	    	set_transient( 'wcepe_external_product_rating_' . $external_product_id, 
-	    	$this->wcepe_get_external_product_rating( $external_product_id ), $this->wcepe_get_transient_time() );
+	    	$this->get_external_product_rating( $external_product_id ), $this->get_transient_time() );
 		}
 
 		return get_transient( 'wcepe_external_product_rating_' . $external_product_id );
 	}
 
-	private function wcepe_display_external_product_rating( $show_rating, $external_product_id ) {
-
-		$number = $this->wcepe_set_external_product_rating_transient( $external_product_id );
+	private function return_rating_percent( $external_product_id ) {
+		$number = $this->set_external_product_rating_transient( $external_product_id );
 
 		if ( $number >= '5' ) {
 			$percent = '30%'; 
@@ -208,25 +171,50 @@ class Woocommerce_External_Product_Embed {
 			$percent = '0%'; 
 		}
 
-		if ( $show_rating == 'show' &&  $this->wcepe_set_external_product_rating_transient( $external_product_id ) != '' ) {
-			return '<p class="external_product_rating"><span style="width:' . $percent . '" class=' . $this->wcepe_set_external_product_rating_transient( $external_product_id ) . '></span></p>';
-		} 
+		return $percent;
 	}
 
+	private function display_external_product_rating( $show_rating, $external_product_id ) {
+		$percent = $this->return_rating_percent( $external_product_id ); 
+		
+		if ( $show_rating == 'show' &&  $this->set_external_product_rating_transient( $external_product_id ) != '' ) {
+			return '<p class="wcepe_external_product_rating"><span style="width:' . $percent . '"></span></p>';
+		}
+	}
 
 	/* Display Button */
 
-	private function wcepe_display_external_product_button( $button_text, $external_product_id ) {
-
-		if ( $button_text != 'hide' && $this->wcepe_set_external_product_link_transient( $external_product_id ) != '' ) {
-			return '<span class="external_product_button"><a href="' . $this->wcepe_set_external_product_link_transient( $external_product_id ) . '" class="button" target="_blank">' . $button_text . '</a></span>';
+	private function display_external_product_button( $button_text, $external_product_id ) {
+		if ( $button_text != 'hide' && $this->set_external_product_link_transient( $external_product_id ) != '' ) {
+			return '<span class="wcepe_external_product_button"><a href="' . $this->set_external_product_link_transient( $external_product_id ) . '" class="button" target="_blank">' . $button_text . '</a></span>';
 		} 
 	}
 
+	/* Test for a Valid ID */
+
+	public function test_for_valid_id( $id ) {
+		$check_for_valid_product = true;
+		if ( $id != '' ) {
+			$id_check = explode( ',', $id );
+			$id_count = count( $id_check );
+
+			if ( $id_count == 1 ) {
+				foreach ( $id_check as $id_test ) {
+					$check = $this->set_external_product_link_transient( $id_test );
+
+					if ( $check == '' ) {
+						$check_for_valid_product = false;
+					} 
+				}
+			}
+		}
+
+		return $check_for_valid_product;
+	}
 
 	/* Create Shortcode */
 
-	public function wcepe_external_product_shortcode( $atts ) {
+	public function external_product_shortcode( $atts ) {
 
 		extract( shortcode_atts(
 			array(
@@ -240,137 +228,38 @@ class Woocommerce_External_Product_Embed {
 		);
 
 		// Check to see if there is a valid ID
-		$check_for_valid_product = true;
-		if ( $id != '' ) {
-
-			$id_check = explode(',', $id);
-			$id_count = count($id_check);
-
-			if ( $id_count == 1 ) {
-
-				foreach ( $id_check as $id_test ) {
-					$check = $this->wcepe_set_external_product_link_transient( $id_test );
-
-					if ( $check == '' ) {
-						$check_for_valid_product = false;
-					} 
-				}
-			}
-		}
-
+		$check_for_valid_product = $this->test_for_valid_id( $id );
 
 		// Create Product Data
 		if ($id != '' && $check_for_valid_product == true ) {
+			$ids = explode( ',', $id );
 
-			$ids = explode(',', $id);
-
-			$content  = '<div class="external_product_wrap"><ul class="external_products">';
+			$content  = '<div class="wcepe_external_product_wrap"><ul class="external_products">';
 
 			foreach ( $ids as $id ) {
-				if ( $this->wcepe_set_external_product_link_transient( $id ) != '') {
-					$content .= '<li class="external_product">';
+				if ( $this->set_external_product_link_transient( $id ) != '') {
+					$content .= '<li class="wcepe_external_product">';
 				}
-				$content .= $this->wcepe_display_external_product_image( $image, $id );
-				$content .= $this->wcepe_display_external_product_title( $title, $id );
-				$content .= $this->wcepe_display_external_product_rating( $rating, $id );
-				$content .= $this->wcepe_display_external_product_price( $price, $id );
-				$content .= $this->wcepe_display_external_product_button( $button, $id );
-				if ( $this->wcepe_set_external_product_link_transient( $id ) != '') {
+				$content .= $this->display_external_product_image( $image, $id );
+				$content .= $this->display_external_product_title( $title, $id );
+				$content .= $this->display_external_product_rating( $rating, $id );
+				$content .= $this->display_external_product_price( $price, $id );
+				$content .= $this->display_external_product_button( $button, $id );
+				if ( $this->set_external_product_link_transient( $id ) != '') {
 					$content .= '</li>';
 				}
-
 			}
 
 			$content .= '</ul></div>';
-			
 
 		} else if ( $check_for_valid_product == false ) {
-
 			$content = "<b>Please enter a valid ID to use this shortcode</b>";
-
 		} else {
-
 			$content = "<b>Please enter an ID to use this shortcode</b>";
-
 		}
-
 
 		return $content;
-
 	}
-
-	/* Create Shortcode for plural spelling */
-
-	public function wcepe_external_products_shortcode( $atts ) {
-
-		extract( shortcode_atts(
-			array(
-				'id'     => '',
-				'image'  => 'show',
-				'title'  => 'show',
-				'price'  => 'show',
-				'rating' => 'show',
-				'button' => 'View Product',
-			), $atts )
-		);
-
-		// Check to see if there is a valid ID
-		$check_for_valid_product = true;
-		if ( $id != '' ) {
-
-			$id_check = explode(',', $id);
-			$id_count = count($id_check);
-
-			if ( $id_count == 1 ) {
-
-				foreach ( $id_check as $id_test ) {
-					$check = $this->wcepe_set_external_product_link_transient( $id_test );
-
-					if ( $check == '' ) {
-						$check_for_valid_product = false;
-					} 
-				}
-			}
-		}
-
-
-		// Create Product Data
-		if ($id != '' && $check_for_valid_product == true ) {
-
-			$ids = explode(',', $id);
-
-			$content  = '<div class="external_product_wrap"><ul class="external_products">';
-
-			foreach ( $ids as $id ) {
-
-				$content .= '<li class="external_product">';
-				$content .= $this->wcepe_display_external_product_image( $image, $id );
-				$content .= $this->wcepe_display_external_product_title( $title, $id );
-				$content .= $this->wcepe_display_external_product_rating( $rating, $id );
-				$content .= $this->wcepe_display_external_product_price( $price, $id );
-				$content .= $this->wcepe_display_external_product_button( $button, $id );
-				$content .= '</li>';
-
-			}
-
-			$content .= '</ul></div>';
-			
-
-		} else if ( $check_for_valid_product == false ) {
-
-			$content = "<b>Please enter a valid ID to use this shortcode</b>";
-
-		} else {
-
-			$content = "<b>Please enter an ID to use this shortcode</b>";
-
-		}
-
-
-		return $content;
-
-	}
-
 
 } // End Class
 
