@@ -234,7 +234,7 @@ class Woocommerce_External_Product_Embed {
 		if ($id != '' && $check_for_valid_product == true ) {
 			$ids = explode( ',', $id );
 
-			$content  = '<div class="wcepe_external_product_wrap"><ul class="external_products">';
+			$content  = '<div class="wcepe_external_product_wrap"><ul class="wcepe_external_products">';
 
 			foreach ( $ids as $id ) {
 				if ( $this->set_external_product_link_transient( $id ) != '') {
