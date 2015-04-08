@@ -21,7 +21,7 @@ This plugin provides a shortcode to embed products from another store on your si
 
 `[external_product id=“99”]`
 
-#### Where can I find the “ID” field?
+#### Where can I find the Product “ID” field?
 
 To find the Product ID, go to the Products screen, hover over the product and the ID will appear as shown below.
 ![Show Product ID](http://docs.woothemes.com/wp-content/uploads/2012/01/Find-Product-ID-in-WooCommerce-950x281.png)
@@ -40,4 +40,4 @@ Adding “hide” to any of those attributes will hide that element, including t
 
 #### Can I add multiple products per shortcode?
 
-Yep! [external_products id=“10,11,12,13,14,15”]
+Yep! `[external_product id=“10,11,12,13,14,15”]`

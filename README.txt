@@ -42,11 +42,11 @@ Adding “hide” to any of those attributes will hide that element, including b
 
 = Where can I find the “ID” field? =
 
-**Insert Link here**
+http://docs.woothemes.com/wp-content/uploads/2012/01/Find-Product-ID-in-WooCommerce-950x281.png
 
 = Can I add multiple product per shortcode? =
 
-Yep! [external_products id=“10,11,12,13,14,15”]
+Yep! `[external_product id=“10,11,12,13,14,15”]`
 
 == Screenshots ==
 

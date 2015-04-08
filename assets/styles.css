@@ -1,13 +1,13 @@
-ul.wcepe_external_products {
+.wcepe_external_products {
 	list-style-type: none;
 	margin-left: 0 !important;
 }
 
-li.wcepe_external_product{ 
+.wcepe_external_product{ 
 	text-align: center;
 	width: 200px;
 	display: inline-block;
-	margin: 10px 10px;
+	margin: 15px 13px;
 }
 
 .wcepe_external_product_image {
