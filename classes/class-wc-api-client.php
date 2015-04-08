@@ -8,6 +8,9 @@
  * @version 0.3.1
  * @license GPL 3 or later http://www.gnu.org/licenses/gpl.html
  */
+if ( ! defined( 'ABSPATH' ) ) {
+	exit; // Exit if accessed directly
+}
 
 class WC_API_Client {
 
@@ -72,147 +75,6 @@ class WC_API_Client {
 	}
 
 	/**
-	 * Get API Index
-	 * @return mixed|json string
-	 */
-	public function get_index() {
-		return $this->_make_api_call( '' );
-	}
-
-	/**
-	 * Get all orders
-	 * @param  array  $params
-	 * @return mixed|jason string
-	 */
-	public function get_orders( $params = array() ) {
-		return $this->_make_api_call( 'orders', $params );
-	}
-
-	/**
-	 * Get a single order
-	 * @param  integer $order_id
-	 * @return mixed|json string
-	 */
-	public function get_order( $order_id ) {
-		return $this->_make_api_call( 'orders/' . $order_id );
-	}
-
-	/**
-	 * Get the total order count
-	 * @return mixed|json string
-	 */
-	public function get_orders_count() {
-		return $this->_make_api_call( 'orders/count' );
-	}
-
-	/**
-	 * Get orders notes for an order
-	 * @param  integer $order_id
-	 * @return mixed|json string
-	 */
-	public function get_order_notes( $order_id ) {
-		return $this->_make_api_call( 'orders/' . $order_id . '/notes' );
-	}
-
-	/**
-	 * Update the order, currently only status update suported by API
-	 * @param  integer $order_id
-	 * @param  array  $data
-	 * @return mixed|json string
-	 */
-	public function update_order( $order_id, $data = array() ) {
-		return $this->_make_api_call( 'orders/' . $order_id, $data, 'POST' );
-	}
-
-	/**
-	 * Delete the order, not suported in WC 2.1, scheduled for 2.2
-	 * @param  integer $order_id
-	 * @return mixed|json string
-	 */
-	public function delete_order( $order_id ) {
-		return $this->_make_api_call( 'orders/' . $order_id, $data = array(), 'DELETE' );
-	}
-
-	/**
-	 * Get all coupons
-	 * @param  array  $params
-	 * @return mixed|json string
-	 */
-	public function get_coupons( $params = array() ) {
-		return $this->_make_api_call( 'coupons', $params );
-	}
-
-	/**
-	 * Get a single coupon
-	 * @param  integer $coupon_id
-	 * @return mixed|json string
-	 */
-	public function get_coupon( $coupon_id ) {
-		return $this->_make_api_call( 'coupons/' . $coupon_id );
-	}
-
-	/**
-	 * Get the total coupon count
-	 * @return mixed|json string
-	 */
-	public function get_coupons_count() {
-		return $this->_make_api_call( 'coupons/count' );
-	}
-
-	/**
-	 * Get a coupon by the coupon code
-	 * @param  string $coupon_code
-	 * @return mixed|json string
-	 */
-	public function get_coupon_by_code( $coupon_code ) {
-		return $this->_make_api_call( 'coupons/code/' . rawurlencode( rawurldecode( $coupon_code ) ) );
-	}
-
-	/**
-	 * Get all customers
-	 * @param  array  $params
-	 * @return mixed|json string
-	 */
-	public function get_customers( $params = array() ) {
-		return $this->_make_api_call( 'customers', $params );
-	}
-
-	/**
-	 * Get a single customer
-	 * @param  integer $customer_id
-	 * @return mixed|json string
-	 */
-	public function get_customer( $customer_id ) {
-		return $this->_make_api_call( 'customers/' . $customer_id );
-	}
-
-	/**
-	 * Get a single customer by email
-	 * @param  string $email
-	 * @return mixed|json string
-	 */
-	public function get_customer_by_email( $email ) {
-		return $this->_make_api_call( 'customers/email/' . $email );
-	}
-
-	/**
-	 * Get the total customer count
-	 * @return mixed|json string
-	 */
-	public function get_customers_count() {
-		return $this->_make_api_call( 'customers/count' );
-	}
-
-	/**
-	 * Get the customer's orders
-	 * @param  integer $customer_id
-	 * @return mixed|json string
-	 */
-	public function get_customer_orders( $customer_id ) {
-		return $this->_make_api_call( 'customers/' . $customer_id . '/orders' );
-	}
-
-	/**
 	 * Get all the products
 	 * @param  array  $params
 	 * @return mixed|json string
@@ -245,33 +107,6 @@ class WC_API_Client {
 	 */
 	public function get_product_reviews( $product_id ) {
 		return $this->_make_api_call( 'products/' . $product_id . '/reviews' );
-	}
-
-	/**
-	 * Get reports
-	 * @param  array  $params
-	 * @return mixed|json string
-	 */
-	public function get_reports( $params = array() ) {
-		return $this->_make_api_call( 'reports', $params );
-	}
-
-	/**
-	 * Get the sales report
-	 * @param  array  $params
-	 * @return mixed|json string
-	 */
-	public function get_sales_report( $params = array() ) {
-		return $this->_make_api_call( 'reports/sales', $params );
-	}
-
-	/**
-	 * Get the top sellers report
-	 * @param  array  $params
-	 * @return mixed|json string
-	 */
-	public function get_top_sellers_report( $params = array() ) {
-		return $this->_make_api_call( 'reports/sales/top_sellers', $params );
 	}
 
 	/**
