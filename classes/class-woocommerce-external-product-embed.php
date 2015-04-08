@@ -1,5 +1,7 @@
 <?php
-if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
+if ( ! defined( 'ABSPATH' ) ) {
+	exit; // Exit if accessed directly
+}
 
 class Woocommerce_External_Product_Embed {
 
@@ -27,7 +29,11 @@ class Woocommerce_External_Product_Embed {
      * @since   1.0.0
      */
 	private function wcepe_store_api_info() {
-		require_once 'class-wc-api-client.php';
+
+
+		if ( ! class_exists( "WC_API_Client" ) ) {
+			require_once 'class-wc-api-client.php';
+		}
 	
 		// require_once 'classes/class-wc-external-product-embed-admin.php';
 
@@ -367,6 +373,5 @@ class Woocommerce_External_Product_Embed {
 
 
 } // End Class
-if (class_exists("Woocommerce_External_Product_Embed")) {
-	$Woocommerce_External_Product_Embed = new Woocommerce_External_Product_Embed();
-}
+
+$Woocommerce_External_Product_Embed = new Woocommerce_External_Product_Embed();

@@ -8,9 +8,12 @@
  * Version: 0.1
  * License: GPL v3 or later - http://www.gnu.org/licenses/old-licenses/gpl-3.0.html
  */
-if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
+if ( ! defined( 'ABSPATH' ) ) {
+	exit; // Exit if accessed directly
+}
 
-// Required Files
-require_once( 'classes/class-woocommerce-external-product-embed.php' );
+if ( ! class_exists( "Woocommerce_External_Product_Embed" ) ) {
+	require_once( 'classes/class-woocommerce-external-product-embed.php' );
+}
 
 /* Silence is Golden */

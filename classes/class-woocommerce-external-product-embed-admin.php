@@ -1,5 +1,7 @@
 <?php
-if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
+if ( ! defined( 'ABSPATH' ) ) {
+	exit; // Exit if accessed directly
+}
 
 class Woocommerce_External_Product_Embed_Admin {
 
@@ -255,6 +257,5 @@ class Woocommerce_External_Product_Embed_Admin {
 
 
 } // End Class
-if (class_exists("Woocommerce_External_Product_Embed_Admin")) {
-	$Woocommerce_External_Product_Embed_Admin = new Woocommerce_External_Product_Embed_Admin();
-}
+
+$Woocommerce_External_Product_Embed_Admin = new Woocommerce_External_Product_Embed_Admin();
