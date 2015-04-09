@@ -20,14 +20,14 @@ class Woocommerce_External_Product_Embed_Admin {
 
 		add_settings_section(
 			'wcepe_pluginPage_section', 
-			__( 'Connect to External Store', 'wordpress' ), 
+			__( 'Connect to External Store', 'wcepe' ), 
 			array( $this, 'wcepe_settings_section_callback' ),
 			'pluginPage'
 		);
 
 		add_settings_field( 
 			'wcepe_text_field_0',
-			__( 'Consumer Key', 'wordpress' ),
+			__( 'Consumer Key', 'wcepe' ),
 			array( $this, 'wcepe_text_field_0_render' ),
 			'pluginPage',
 			'wcepe_pluginPage_section'
@@ -35,7 +35,7 @@ class Woocommerce_External_Product_Embed_Admin {
 
 		add_settings_field( 
 			'wcepe_text_field_1', 
-			__( 'Consumer Secret', 'wordpress' ), 
+			__( 'Consumer Secret', 'wcepe' ), 
 			array( $this, 'wcepe_text_field_1_render' ),
 			'pluginPage', 
 			'wcepe_pluginPage_section' 
@@ -43,7 +43,7 @@ class Woocommerce_External_Product_Embed_Admin {
 
 		add_settings_field( 
 			'wcepe_text_field_2', 
-			__( 'Store Home URL', 'wordpress' ), 
+			__( 'Store Home URL', 'wcepe' ), 
 			array( $this, 'wcepe_text_field_2_render' ),
 			'pluginPage', 
 			'wcepe_pluginPage_section' 
@@ -51,7 +51,7 @@ class Woocommerce_External_Product_Embed_Admin {
 
 		add_settings_field( 
 			'wcepe_text_field_3', 
-			__( 'Transient Set Time <br> (in seconds)', 'wordpress' ), 
+			__( 'Transient Set Time <br> (in seconds)', 'wcepe' ), 
 			array( $this, 'wcepe_text_field_3_render' ),
 			'pluginPage', 
 			'wcepe_pluginPage_section' 
@@ -59,7 +59,7 @@ class Woocommerce_External_Product_Embed_Admin {
 
 		add_settings_field( 
 			'wcepe_text_field_4', 
-			__( 'Delete Active Transients', 'wordpress' ), 
+			__( 'Delete Active Transients', 'wcepe' ), 
 			array( $this, 'wcepe_text_field_4_render' ),
 			'pluginPage', 
 			'wcepe_pluginPage_section' 
@@ -67,7 +67,7 @@ class Woocommerce_External_Product_Embed_Admin {
 
 		add_settings_field( 
 			'wcepe_text_field_5', 
-			__( 'Delete Expired Transients', 'wordpress' ), 
+			__( 'Delete Expired Transients', 'wcepe' ), 
 			array( $this, 'wcepe_text_field_5_render' ),
 			'pluginPage', 
 			'wcepe_pluginPage_section' 
@@ -105,7 +105,7 @@ class Woocommerce_External_Product_Embed_Admin {
 	function wcepe_text_field_4_render(  ) { 
 		$options = get_option( 'wcepe_settings' );
 		?>
-		<a href="<?php echo admin_url( 'options-general.php?page=embed_external_woocommerce_products&amp;action=clear_transients' ); ?>" class="button">Clear Transients</a>
+		<a href="<?php echo admin_url( 'options-general.php?page=embed_external_woocommerce_products&amp;action=clear_transients' ); ?>" class="button"><?php echo __( 'Clear Transients', 'wcepe' ); ?></a>
 		<?php
 
 		if ( ! empty( $_GET['action'] ) ) {
@@ -149,7 +149,7 @@ class Woocommerce_External_Product_Embed_Admin {
 	function wcepe_text_field_5_render(  ) { 
 		$options = get_option( 'wcepe_settings' );
 		?>
-		<a href="<?php echo admin_url( 'options-general.php?page=embed_external_woocommerce_products&amp;action=clear_expired_transients' ); ?>" class="button">Clear Transients</a>
+		<a href="<?php echo admin_url( 'options-general.php?page=embed_external_woocommerce_products&amp;action=clear_expired_transients' ); ?>" class="button"><?php echo __( 'Clear Transients', 'wcepe' ); ?></a>
 		<?php
 
 		if ( ! empty( $_GET['action'] ) ) {
@@ -192,22 +192,22 @@ class Woocommerce_External_Product_Embed_Admin {
 
 	function display_success_message() {
 		if ( ! empty( $_GET['action'] ) && $_GET['action'] == 'clear_transients' ) {
-			echo '<div class="updated"><p>Transients Cleared</p></div>';
+			echo '<div class="updated"><p>' . __( 'Transients Cleared', 'wcepe' ) . '</p></div>';
 		} else if ( ! empty( $_GET['action']) && $_GET['action'] == 'clear_expired_transients' ) {
-			echo '<div class="updated"><p>Expired Transients Cleared</p></div>';
+			echo '<div class="updated"><p>' . __( 'Expired Transients Cleared', 'wcepe' ) . '</p></div>';
 		}
 	}
 
 	function wcepe_settings_section_callback(  ) { 
 		//echo $this->display_success_message();
-		echo __( 'You can find instructions here:  <a href="http://docs.woothemes.com/document/woocommerce-rest-api/" target="_blank">Generating API keys</a>', 'wordpress' );
+		echo __( 'You can find instructions here:  <a href="http://docs.woothemes.com/document/woocommerce-rest-api/" target="_blank">Generating API keys</a>', 'wcepe' );
 	}
 
 	function wcepe_options_page(  ) { 
 		?>
 		<form action='options.php' method='post'>
 			
-			<h2>WooCommerce External Product Embed</h2>
+			<h2><?php echo __( 'WooCommerce External Product Embed', 'wcepe' ); ?></h2>
 			
 			<?php
 			settings_fields( 'pluginPage' );

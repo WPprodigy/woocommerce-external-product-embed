@@ -9,9 +9,15 @@ class Woocommerce_External_Product_Embed {
 		if ( is_admin() ) {
 			require_once 'class-woocommerce-external-product-embed-admin.php';
 		}
-		
+
+		add_action( 'plugins_loaded', 'wcepe_text_domain' );
+
 		add_shortcode( 'external_product', array( $this, 'external_product_shortcode' ) );
 	} 
+
+	public function wcepe_text_domain() {
+	  load_plugin_textdomain( 'wcepe', false, dirname( plugin_basename( __FILE__ ) ) . '/languages' ); 
+	}
 
 	private function store_api_info() {
 		if ( ! class_exists( "WC_API_Client" ) ) {

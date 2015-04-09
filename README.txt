@@ -1,9 +1,9 @@
 === WooCommerce External Product Embed ===
 Author: Caleb Burks
-Tags: woocommerce, products, embed, external'
-Requires at least: 1.0
-Tested up to: 4.1.1
-Stable tag: 4.1.1
+Tags: woocommerce, products, embed, external
+Requires at least: 4.0
+Tested up to: 4.1
+Text Domain: wcepe
 License: GPL v3 or later
 License URI: http://www.gnu.org/licenses/old-licenses/gpl-3.0.html
 
