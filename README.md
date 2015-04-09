@@ -41,3 +41,9 @@ Adding “hide” to any of those attributes will hide that element, including t
 #### Can I add multiple products per shortcode?
 
 Yep! `[external_product id=“10,11,12,13,14,15”]`
+
+#### How can I edit the html output?
+
+You can copy the file in this plugin located at `templates/shortcodes/external-product-single.php`, and paste it into the root of your child theme like so: `theme-name/woocommerce-external-product-embed/shortcodes/external-product-single.php`. 
+
+The result will be a fully editable html file to do with as you wish. 
