@@ -191,9 +191,9 @@ class Woocommerce_External_Product_Embed_Admin {
 	}
 
 	function display_success_message() {
-		if ( ! empty( $_GET['action'] && $_GET['action'] == 'clear_transients' ) ) {
+		if ( ! empty( $_GET['action'] ) && $_GET['action'] == 'clear_transients' ) {
 			echo '<div class="updated"><p>Transients Cleared</p></div>';
-		} else if ( ! empty( $_GET['action'] && $_GET['action'] == 'clear_expired_transients' ) ) {
+		} else if ( ! empty( $_GET['action']) && $_GET['action'] == 'clear_expired_transients' ) {
 			echo '<div class="updated"><p>Expired Transients Cleared</p></div>';
 		}
 	}
