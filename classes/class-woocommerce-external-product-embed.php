@@ -41,7 +41,19 @@ class Woocommerce_External_Product_Embed {
 		return $time;
 	}
 
-	/* Get and Return Link */
+	/* Set Template File */
+
+	public function get_template_file() {
+
+		// Check if template has been overriden
+		if ( file_exists( get_stylesheet_directory() . '/woocommerce-external-product-embed/shortcodes/external-product-single.php' ) ) {
+			return get_stylesheet_directory() . '/woocommerce-external-product-embed/shortcodes/external-product-single.php';
+		} else {
+			return plugin_dir_path( dirname( __FILE__ ) ) . 'templates/shortcodes/external-product-single.php';
+		}
+	}
+
+	/* Set Link Transient */
 
 	private function get_external_product_link( $external_product_id ) {
 		$wc_api   = $this->store_api_info();
@@ -60,7 +72,7 @@ class Woocommerce_External_Product_Embed {
 		return get_transient( 'wcepe_external_product_link_' . $external_product_id );
 	}
 
-	/* Get and Display Image */
+	/* Set Image Transient*/
 
 	private function get_external_product_image( $external_product_id ) {
 		$wc_api   = $this->store_api_info();
@@ -79,13 +91,8 @@ class Woocommerce_External_Product_Embed {
 		return get_transient( 'wcepe_external_product_image_' . $external_product_id );
 	}
 
-	private function display_external_product_image( $show_image, $external_product_id ) {
-		if ( $show_image == 'show' &&  $this->set_external_product_image_transient( $external_product_id ) != '' ) {
-			return '<a href=' . $this->set_external_product_link_transient( $external_product_id ) . ' target="_blank"><img class="wcepe_external_product_image" src=' . $this->set_external_product_image_transient( $external_product_id ) . ' ></a>';
-		} 
-	}
 
-	/* Get and Display Title */
+	/* Set Title Transient */
 
 	private function get_external_product_title( $external_product_id ) {
 		$wc_api   = $this->store_api_info();
@@ -104,13 +111,7 @@ class Woocommerce_External_Product_Embed {
 		return get_transient( 'wcepe_external_product_title_' . $external_product_id );
 	}
 
-	private function display_external_product_title( $show_title, $external_product_id ) {
-		if ( $show_title == 'show' &&  $this->set_external_product_title_transient( $external_product_id ) != '' ) {
-			return '<h3 class="wcepe_external_product_title"><a href=' . $this->set_external_product_link_transient( $external_product_id ) . ' target="_blank">' . $this->set_external_product_title_transient( $external_product_id ) . '</a></h3>';
-		} 
-	}
-
-	/* Get and Display Price */
+	/* Set Price Transient*/
 
 	private function get_external_product_price( $external_product_id ) {
 		$wc_api   = $this->store_api_info();
@@ -129,13 +130,7 @@ class Woocommerce_External_Product_Embed {
 		return get_transient( 'wcepe_external_product_price_' . $external_product_id );
 	}
 
-	private function display_external_product_price( $show_price, $external_product_id ) {
-		if ( $show_price == 'show' &&  $this->set_external_product_price_transient( $external_product_id ) != '' ) {
-			return '<span class="wcepe_external_product_price">' . $this->set_external_product_price_transient( $external_product_id ) . '</span>';
-		} 
-	}
-
-	/* Get and Display Rating */
+	/* Set Rating Transient */
 
 	private function get_external_product_rating( $external_product_id ) {
 		$wc_api   = $this->store_api_info();
@@ -154,40 +149,24 @@ class Woocommerce_External_Product_Embed {
 		return get_transient( 'wcepe_external_product_rating_' . $external_product_id );
 	}
 
-	private function return_rating_percent( $external_product_id ) {
+	private function return_rating_width( $external_product_id ) {
 		$number = $this->set_external_product_rating_transient( $external_product_id );
 
 		if ( $number >= '5' ) {
-			$percent = '99px'; 
+			$width = '99px'; 
 		} else if ( $number >= '4' ) {
-			$percent = '77px'; 
+			$width = '77px'; 
 		} else if ( $number >= '3' ) {
-			$percent = '58px'; 
+			$width = '58px'; 
 		} else if ( $number >= '2' ) {
-			$percent = '38px'; 
+			$width = '38px'; 
 		} else if ( $number >= '1' ) {
-			$percent = '20px'; 
+			$width = '20px'; 
 		} else if ( $number <= '.9' ) {
-			$percent = '0'; 
+			$width = '0'; 
 		}
 
-		return $percent;
-	}
-
-	private function display_external_product_rating( $show_rating, $external_product_id ) {
-		$percent = $this->return_rating_percent( $external_product_id ); 
-		
-		if ( $show_rating == 'show' &&  $this->set_external_product_rating_transient( $external_product_id ) != '' ) {
-			return '<p class="wcepe_external_product_rating"><span style="width:' . $percent . '"></span></p>';
-		}
-	}
-
-	/* Display Button */
-
-	private function display_external_product_button( $button_text, $external_product_id ) {
-		if ( $button_text != 'hide' && $this->set_external_product_link_transient( $external_product_id ) != '' ) {
-			return '<span class="wcepe_external_product_button"><a href="' . $this->set_external_product_link_transient( $external_product_id ) . '" class="button" target="_blank">' . $button_text . '</a></span>';
-		} 
+		return $width;
 	}
 
 	/* Test for a Valid ID */
@@ -230,24 +209,30 @@ class Woocommerce_External_Product_Embed {
 		// Check to see if there is a valid ID
 		$check_for_valid_product = $this->test_for_valid_id( $id );
 
-		// Create Product Data
 		if ($id != '' && $check_for_valid_product == true ) {
 			$ids = explode( ',', $id );
 
-			$content  = '<div class="wcepe_external_product_wrap"><ul class="wcepe_external_products">';
+			$content  .= '<div class="wcepe_external_product_wrap"><ul class="wcepe_external_products">';
 
 			foreach ( $ids as $id ) {
-				if ( $this->set_external_product_link_transient( $id ) != '') {
-					$content .= '<li class="wcepe_external_product">';
-				}
-				$content .= $this->display_external_product_image( $image, $id );
-				$content .= $this->display_external_product_title( $title, $id );
-				$content .= $this->display_external_product_rating( $rating, $id );
-				$content .= $this->display_external_product_price( $price, $id );
-				$content .= $this->display_external_product_button( $button, $id );
-				if ( $this->set_external_product_link_transient( $id ) != '') {
-					$content .= '</li>';
-				}
+
+				// Set Show/Hide Variables for Template
+				$show_image  = $image;
+				$show_title  = $title;
+				$show_price  = $price;
+				$show_rating = $rating;
+
+				// Set Variables for Template
+				$product_rating = $this->return_rating_width( $id );
+				$product_link   = $this->set_external_product_link_transient( $id );
+				$product_title  = $this->set_external_product_title_transient( $id );
+				$product_image  = $this->set_external_product_image_transient( $id );
+				$product_price  = $this->set_external_product_price_transient( $id ); 
+
+				ob_start();
+				include( $this->get_template_file() );
+				$content .= ob_get_clean();
+
 			}
 
 			$content .= '</ul></div>';
