@@ -14,8 +14,17 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit; // Exit if accessed directly
 }
 
-if ( ! class_exists( "Woocommerce_External_Product_Embed" ) ) {
-	require_once( 'classes/class-woocommerce-external-product-embed.php' );
+add_action( 'plugins_loaded', 'wcepe_load_after_plugins_loaded' );
+
+function wcepe_load_after_plugins_loaded() {
+	if ( ! class_exists( "Woocommerce_External_Product_Embed" ) ) {
+
+		require_once( 'classes/class-woocommerce-external-product-embed.php' );
+		
+		if ( ! is_admin() ) {
+			wp_register_style( 'wcepe_styles', plugins_url('assets/styles.css', __FILE__) );
+		}
+	}
 }
 
 /* Silence is Golden */

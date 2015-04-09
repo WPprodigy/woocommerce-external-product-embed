@@ -6,13 +6,10 @@ if ( ! defined( 'ABSPATH' ) ) {
 class Woocommerce_External_Product_Embed {
 
 	public function __construct () {
-		require_once 'class-woocommerce-external-product-embed-admin.php';
-
-        wp_register_style( 'wcepe_styles', plugins_url('../assets/styles.css', __FILE__) );
-		wp_enqueue_style( 'wcepe_styles' );
-
-		wp_enqueue_style( 'dashicons' );
-
+		if ( is_admin() ) {
+			require_once 'class-woocommerce-external-product-embed-admin.php';
+		}
+		
 		add_shortcode( 'external_product', array( $this, 'external_product_shortcode' ) );
 	} 
 
@@ -44,7 +41,6 @@ class Woocommerce_External_Product_Embed {
 	/* Set Template File */
 
 	public function get_template_file() {
-
 		// Check if template has been overriden
 		if ( file_exists( get_stylesheet_directory() . '/woocommerce-external-product-embed/shortcodes/external-product-single.php' ) ) {
 			return get_stylesheet_directory() . '/woocommerce-external-product-embed/shortcodes/external-product-single.php';
@@ -205,6 +201,10 @@ class Woocommerce_External_Product_Embed {
 				'button' => 'View Product',
 			), $atts )
 		);
+
+		// Add styles when shortcode is used on page
+		wp_enqueue_style( 'wcepe_styles' );
+		wp_enqueue_style( 'dashicons' );
 
 		// Check to see if there is a valid ID
 		$check_for_valid_product = $this->test_for_valid_id( $id );
