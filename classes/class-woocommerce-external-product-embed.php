@@ -12,17 +12,19 @@ class Woocommerce_External_Product_Embed {
 		}
 
 		if ( ! is_admin() ) {
-			add_action( 'wp_enqueue_scripts',array( $this, 'register_css' ) );
+			add_action( 'wp_enqueue_scripts', array( $this, 'register_css' ) );
 		}
 
-		add_action( 'plugins_loaded', 'wcepe_text_domain' );
+		add_action( 'plugins_loaded', array( $this, 'load_text_domain' ) );
 
 		add_shortcode( 'external_product', array( $this, 'external_product_shortcode' ) );
-		
+
 	} 
 
-	public function wcepe_text_domain() {
-	  load_plugin_textdomain( 'wcepe', false, dirname( plugin_basename( __FILE__ ) ) . '/languages' ); 
+	public function load_text_domain() {
+
+		load_plugin_textdomain( 'wcepe', false, dirname( plugin_basename( __FILE__ ) ) . '/languages' ); 
+
 	}
 
 	public function register_css() {
