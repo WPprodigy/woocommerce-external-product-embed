@@ -3,7 +3,7 @@
  * Plugin Name: WooCommerce External Product Embed
  * Plugin URI: http://calebburks.com
  * Description: Provides a shortcode to embed products from another store.
- * Version: 0.1
+ * Version: 1.o
  * Author: Caleb Burks
  * Author URI: http://calebburks.com
  * Copyright: (c) 2015 Caleb Burks
