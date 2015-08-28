@@ -6,17 +6,29 @@ if ( ! defined( 'ABSPATH' ) ) {
 class Woocommerce_External_Product_Embed {
 
 	public function __construct () {
+
 		if ( is_admin() ) {
 			require_once 'class-woocommerce-external-product-embed-admin.php';
+		}
+
+		if ( ! is_admin() ) {
+			add_action( 'wp_enqueue_scripts',array( $this, 'register_css' ) );
 		}
 
 		add_action( 'plugins_loaded', 'wcepe_text_domain' );
 
 		add_shortcode( 'external_product', array( $this, 'external_product_shortcode' ) );
+		
 	} 
 
 	public function wcepe_text_domain() {
 	  load_plugin_textdomain( 'wcepe', false, dirname( plugin_basename( __FILE__ ) ) . '/languages' ); 
+	}
+
+	public function register_css() {
+
+		wp_register_style( 'wcepe_styles', plugins_url( 'assets/styles.css', dirname( plugin_basename( __FILE__ ) ) ) );
+
 	}
 
 	private function store_api_info() {
