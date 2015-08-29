@@ -17,9 +17,10 @@ This plugin provides a shortcode to embed products from another store on your si
 
 ## Frequently Asked Questions
 
-#### What is the shortcode for this plugin?
+#### What are the shortcodes for this plugin?
 
 `[external_product id=“99”]`
+`[recent_external_products number=“10”]`
 
 #### Where can I find the Product “ID” field?
 
@@ -32,11 +33,11 @@ To find the Product ID, go to the Products screen, hover over the product and th
 
 #### Can I control what gets displayed by the shortcode?
 
-There are quite a few attributes that can be added to the shortcode. The only required attribute is “id”. Here is an example of all the attributes:
+There are quite a few attributes that can be added to the shortcode. The only required attribute is “id” for the ‘external_product’ shortcode. Here is an example of all the attributes on the ‘external_product’ shortcode:
 
 `[external_product id=“99” image=“show” title=“show” price=“show” rating=“show” button=“Custom Text Here”]`
 
-Adding “hide” to any of those attributes will hide that element, including the button. 
+Adding “hide” to any of those attributes will hide that element, including the button.
 
 #### Can I add multiple products per shortcode?
 
@@ -44,6 +45,21 @@ Yep! `[external_product id=“10,11,12,13,14,15”]`
 
 #### How can I edit the html output?
 
-You can copy the file in this plugin located at `templates/shortcodes/external-product-single.php`, and paste it into the root of your child theme like so: `theme-name/woocommerce-external-product-embed/shortcodes/external-product-single.php`. 
+You can copy the file in this plugin located at `templates/shortcodes/external-product-single.php`, and paste it into the root of your child theme like so: `theme-name/woocommerce-external-product-embed/shortcodes/external-product-single.php`. Then you can edit this file as you wish.
 
-The result will be a fully editable html file to do with as you wish. 
+## Changelog
+
+= 2.0 =
+* Feature - New shortcode: [recent_external_products]
+* Feature - Added extensibility throughout the whole plugin.
+* Tweak - Combined all product-related data into a single transient.
+* Tweak - Reworked the admin page for a cleaner interface.
+* Tweak - Updated to the new WooCommerce API.
+
+= 1.0 =
+Initial Release!
+
+## Upgrade Notice
+
+= 2.0 =
+2.0 is a major rewrite. More efficient, faster, and comes with a new shortcode! The previous shortcodes will still work, but the admin settings will be lost. So when updating, be sure to head over to the settings in order to re-enter the API details.
