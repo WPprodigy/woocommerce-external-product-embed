@@ -11,16 +11,21 @@ This plugin provides a shortcode to embed products from another store on your si
 
 ### A few notes about this plugin:
 
-*   It requires an admin account for the website running WooCommerce
-*   It must make an authorized connection to the external site
-*   This plugin stores transients in the wp-options table of your database
+* It requires an admin account for the website running WooCommerce.
+* It must make an authorized connection to the external site.
+* This plugin stores transients in the wp-options table of your database.
+
+## Code Snippets
+
+* Manipulate the product data: https://gist.github.com/WPprodigy/afd0db56bf3f67379237
+* Add custom settings: https://gist.github.com/WPprodigy/96dbaeab8820cc85af42
 
 ## Frequently Asked Questions
 
 #### What are the shortcodes for this plugin?
 
-`[external_product id=“99”]`
-`[recent_external_products number=“10”]`
+* `[external_product id=“99”]`
+* `[recent_external_products number=“10”]`
 
 #### Where can I find the Product “ID” field?
 
@@ -57,9 +62,10 @@ You can copy the file in this plugin located at `templates/shortcodes/external-p
 * Tweak - Updated to the new WooCommerce API.
 
 = 1.0 =
-Initial Release!
+* Initial Release!
 
 ## Upgrade Notice
 
 = 2.0 =
+
 2.0 is a major rewrite. More efficient, faster, and comes with a new shortcode! The previous shortcodes will still work, but the admin settings will be lost. So when updating, be sure to head over to the settings in order to re-enter the API details.
