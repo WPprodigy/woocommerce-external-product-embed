@@ -142,12 +142,10 @@ class Woocommerce_External_Product_Embed_Transients {
 		}
 
 		if ( in_array( $this->product_id, $ids ) ) {
-		    return true;
+			return true;
 		} else {
 			return false;
 		}
-
-		return $exists;
 
 	}
 
