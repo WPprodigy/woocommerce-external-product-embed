@@ -92,9 +92,10 @@ class Woocommerce_External_Product_Embed {
 
 		$filtered_defaults = apply_filters( 'wcepe_external_product_shortcode', $defaults );
 		$args = shortcode_atts( $filtered_defaults, $atts );
+		$filtered_args = apply_filters( 'wcepe_external_product_shortcode_args', $args );
 
 		// Make the defaults usuable in the tempaltes
-		extract($args);
+		extract($filtered_args);
 
 		// Add styles when the shortcode is used on page
 		wp_enqueue_style( 'wcepe-styles' );
@@ -153,9 +154,10 @@ class Woocommerce_External_Product_Embed {
 
 		$filtered_defaults = apply_filters( 'wcepe_recent_external_products_shortcode', $defaults );
 		$args = shortcode_atts( $filtered_defaults, $atts );
+		$filtered_args = apply_filters( 'wcepe_recent_external_products_shortcode_args', $args );
 
 		// Make the defaults usuable in the tempaltes
-		extract($args);
+		extract($filtered_args);
 
 		// Add styles when the shortcode is used on page
 		wp_enqueue_style( 'wcepe-styles' );
