@@ -18,7 +18,6 @@ if ( ! defined( 'ABSPATH' ) ) {
 class Woocommerce_External_Product_Embed {
 
 	public function __construct() {
-
 		// Get product information and set the transients
 		require_once 'class-woocommerce-external-product-embed-transients.php';
 
@@ -31,17 +30,13 @@ class Woocommerce_External_Product_Embed {
 		// Register Shortcodes
 		add_shortcode( 'external_product', array( $this, 'external_product_shortcode' ) );
 		add_shortcode( 'recent_external_products', array( $this, 'recent_external_products_shortcode' ) );
-
 	} 
-
 
 	/**
 	 * Load Text Domain
 	 */
 	public function load_text_domain() {
-
 		load_plugin_textdomain( 'woocommerce-external-product-embed', false, dirname( plugin_basename( __FILE__ ) ) . '/languages' ); 
-
 	}
 
 
@@ -49,9 +44,7 @@ class Woocommerce_External_Product_Embed {
 	 * Register the stylesheet
 	 */
 	public function register_css() {
-
 		wp_register_style( 'wcepe-styles', plugins_url( 'assets/styles.css', dirname( plugin_basename( __FILE__ ) ) ) );
-
 	}
 
 
@@ -59,26 +52,18 @@ class Woocommerce_External_Product_Embed {
 	 * Get the Template File
 	 */
 	public function get_template_file() {
-
 		// Check if template has been overriden
 		if ( file_exists( get_stylesheet_directory() . '/woocommerce-external-product-embed/shortcodes/external-product-single.php' ) ) {
-
 			return get_stylesheet_directory() . '/woocommerce-external-product-embed/shortcodes/external-product-single.php';
-
 		} else {
-
 			return plugin_dir_path( dirname( __FILE__ ) ) . 'templates/shortcodes/external-product-single.php';
-
 		}
-
 	}
-
 
 	/**
 	 * Create the Shortcode
 	 */
 	public function external_product_shortcode( $atts ) {
-
 		$args = (array)$atts;
 
 		$defaults = array(
@@ -93,8 +78,8 @@ class Woocommerce_External_Product_Embed {
 		$filtered_defaults = apply_filters( 'wcepe_external_product_shortcode', $defaults );
 		$args = shortcode_atts( $filtered_defaults, $atts );
 
-		// Make the defaults usuable in the tempaltes
-		extract($args);
+		// Make the defaults usuable in the templates
+		extract( $args );
 
 		// Add styles when the shortcode is used on page
 		wp_enqueue_style( 'wcepe-styles' );
@@ -102,44 +87,35 @@ class Woocommerce_External_Product_Embed {
 
 		// Returns false if there are no IDs
 		if ( $id ) {
-
 			$ids = explode( ',', $id );
 
 			$opening_html = '<div class="wcepe_external_product_wrap"><ul class="wcepe_external_products">';
 			$content  = apply_filters( 'wcepe_opening_html',  $opening_html );
 
 			foreach ( $ids as $id ) {
-
 				$product_id = trim($id);
 				$transients = new Woocommerce_External_Product_Embed_Transients( $product_id );
 				$product    = $transients->get_all_product_data();
 
 				// Returns false if the product does not exist
 				if ( $product ) {
-
 					ob_start();
 					include( $this->get_template_file() );
 					$content .= ob_get_clean();
-
 				}
-
 			} // end foreach
 
 			$ending_html = '</ul></div>';
 			$content  .= apply_filters( 'wcepe_ending_html',  $ending_html );
 
 			return $content;
-
-		}  // end ID check
-
+		} // end ID check
 	}
-
 
 	/**
 	 * Create the Shortcode
 	 */
 	public function recent_external_products_shortcode( $atts ) {
-
 		$args = (array)$atts;
 
 		$defaults = array(
@@ -168,30 +144,23 @@ class Woocommerce_External_Product_Embed {
 		$content  = apply_filters( 'wcepe_opening_html',  $opening_html );
 
 		foreach ( $ids as $id ) {
-
 			$product_id = trim($id);
 			$transients = new Woocommerce_External_Product_Embed_Transients( $product_id );
 			$product    = $transients->get_all_product_data();
 
 			// Returns false if the product does not exist
 			if ( $product ) {
-
 				ob_start();
 				include( $this->get_template_file() );
 				$content .= ob_get_clean();
-
 			}
-
 		} // end foreach
 
 		$ending_html = '</ul></div>';
 		$content  .= apply_filters( 'wcepe_ending_html',  $ending_html );
 
 		return $content;
-
 	}
-
-
 
 } // End Class
 

@@ -17,17 +17,12 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit; // Exit if accessed directly
 }
 
-
 add_action( 'plugins_loaded', 'wcepe_load_after_plugins_loaded' );
 
 function wcepe_load_after_plugins_loaded() {
-
 	if ( ! class_exists( "Woocommerce_External_Product_Embed" ) ) {
-
 		require_once( 'classes/class-woocommerce-external-product-embed.php' );
-
 	}
-
 }
 
 /* Silence is Golden */
