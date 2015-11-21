@@ -84,18 +84,11 @@ class Woocommerce_External_Product_Embed_Admin {
 			array( $this, 'transients_set_time' ), 'wcepe_settings_group', 'wcepe_transient_section'
 		);
 
-		// Delete All Transeints
+		// Delete Product Transients
 		add_settings_field(
 			'wcepe_delete_all_transients',
-			__( 'Delete All Transients', 'woocommerce-external-product-embed' ),
+			__( 'Delete Product Transients', 'woocommerce-external-product-embed' ),
 			array( $this, 'delete_all_transients' ), 'wcepe_settings_group', 'wcepe_transient_section'
-		);
-
-		// Delete Expired Transeints
-		add_settings_field( 
-			'wcepe_delete_expired_transients',
-			__( 'Delete Expired Transients', 'woocommerce-external-product-embed' ),
-			array( $this, 'delete_expired_transients' ), 'wcepe_settings_group', 'wcepe_transient_section'
 		);
 
 		do_action( 'wcepe_after_transients_settings');
@@ -105,7 +98,7 @@ class Woocommerce_External_Product_Embed_Admin {
 	 * Add a link to the docs on gettings API credentials
 	 */
 	public function api_instructions() {
-		echo sprintf( __( 'You can find instructions here: <a href="%s" target="_blank">Generating API keys</a>',
+		echo sprintf( __( 'Instructions on how to get this information: <a href="%s" target="_blank">How to generate API keys</a>.',
 			'woocommerce-external-product-embed' ), 'http://docs.woothemes.com/document/woocommerce-rest-api/' );
 	}
 
@@ -140,9 +133,8 @@ class Woocommerce_External_Product_Embed_Admin {
 	 * Explain how transients work
 	 */
 	public function transient_instructions() {
-		// Look for an article that would fit well here
-		echo sprintf( __( 'More information on transients here: <a href="%s" target="_blank">What are transients?</a>',
-			'woocommerce-external-product-embed' ), '#' );
+		echo sprintf( __( '<a href="%s" target="_blank">What are transients?</a> By default, this option is set to 86400 seconds, which is equal to one day.',
+			'woocommerce-external-product-embed' ), 'https://codex.wordpress.org/Transients_API' );
 	}
 
 	/**
@@ -150,7 +142,7 @@ class Woocommerce_External_Product_Embed_Admin {
 	 */
 	public function transients_set_time() {
 		$options = get_option( 'wcepe_settings' ); ?>
-		<input type='text' class="regular-text wcepe_transients_set_time" name='wcepe_settings[wcepe_transient_time]' value='<?php echo $options['wcepe_transient_time']; ?>'>
+		<input type='text' class="regular-text wcepe_transients_set_time" name='wcepe_settings[wcepe_transient_time]' placeholder="86400" value='<?php echo $options['wcepe_transient_time']; ?>'>
 		<?php
 	}
 
@@ -158,11 +150,12 @@ class Woocommerce_External_Product_Embed_Admin {
 	 * Delete All Transients
 	 */
 	public function delete_all_transients() {
-		$options = get_option( 'wcepe_settings' ); ?>
-		<a href="<?php echo admin_url( 'options-general.php?page=embed_external_woocommerce_products&amp;action=clear_transients' ); ?>" class="button"><?php echo __( 'Clear Transients', 'wcepe' ); ?></a>
+		$options = get_option( 'wcepe_settings' ); 
+		$delete_url = wp_nonce_url( admin_url( 'options-general.php?page=embed_external_woocommerce_products&action=clear_transients' ), 'wcepe_clear_transients' ); ?>
+		<a href="<?php echo $delete_url; ?>" class="button"><?php echo __( 'Clear Transients', 'wcepe' ); ?></a>
 		<?php
 
-		if ( ! empty( $_GET['action'] ) ) {
+		if ( ! empty( $_GET['action'] ) && ! empty( $_REQUEST['_wpnonce'] ) && wp_verify_nonce( $_REQUEST['_wpnonce'], 'wcepe_clear_transients' ) ) {
 			if ( $_GET['action'] === 'clear_transients' ) {
 				$number = $this->delete_external_product_transients();
 			}
@@ -170,75 +163,32 @@ class Woocommerce_External_Product_Embed_Admin {
 	}
 
 	/**
-	 * Delete Expired Transients
-	 */
-	public function delete_expired_transients() {
-		$options = get_option( 'wcepe_settings' ); ?>
-		<a href="<?php echo admin_url( 'options-general.php?page=embed_external_woocommerce_products&amp;action=clear_expired_transients' ); ?>" class="button"><?php echo __( 'Clear Transients', 'wcepe' ); ?></a>
-		<?php
-
-		if ( ! empty( $_GET['action'] ) ) {
-			if ($_GET['action'] === 'clear_expired_transients') {
-				$number = $this->delete_external_product_transients('expired');
-			}
-		}
-	}
-
-	/**
 	 * Look for and delete transients
 	 */
-	private function delete_external_product_transients( $type = 'all' ) {
+	private function delete_external_product_transients() {
 		global $wpdb;
-
-		if ( $type == 'expired') {
-			$type = 'transient_timeout';
-		} else {
-			$type = 'transient';
-		}
 
 		$transient_search = "SELECT `option_name` AS `name`, `option_value` AS `value`
 		FROM  $wpdb->options
 		WHERE `option_name` LIKE '%transient_wcepe_external_product_%'
 		ORDER BY `option_name`";
 
-		$expired_search = "SELECT `option_name` AS `name`, `option_value` AS `value`
-		FROM  $wpdb->options
-		WHERE `option_name` LIKE '%transient_timeout_wcepe_external_product_%'
-		ORDER BY `option_name`";
-
 		$transients = $wpdb->get_results( $transient_search );
-		$transient_timeout = $wpdb->get_results( $expired_search );
-		$prefix = '_' . $type . '_';
-
-		$all_transients      = array();
-		$expired_transients  = array();
+		$prefix     = '_transient_';
 
 		if ( ! empty( $transients ) ) {
-			// Get All Transients
+
+			$transients_to_clear = array();
 			foreach ( $transients as $result ) {
-				$all_transients[] = $result->name;
+				$transients_to_clear[] = $result->name;
 			}
 
-			// Get Expired Transients
-			foreach ( $transient_timeout as $result ) {
-				if ( $result->value < time() ) {
-					$expired_transients[] = $result->name;
-				}
-			}
-
-			// If we aren't just deleting expired transients, merge the arrays.
-			if ( $type == 'transient_timeout' ) {
-				$transients_to_clear = $expired_transients;
-			} else {
-				$transients_to_clear = array_merge($all_transients, $expired_transients);
-			}
-
-			$number_to_delete = count($transients_to_clear);
+			$number_to_delete = count( $transients_to_clear );
 
 			// Delete the transients
 			foreach( $transients_to_clear as $transient ) {
-				if (substr($transient, 0, strlen($prefix)) == $prefix) {
-					$transient_name = substr($transient, strlen($prefix));
+				if ( substr( $transient, 0, strlen( $prefix ) ) == $prefix ) {
+					$transient_name = substr( $transient, strlen( $prefix ) );
 					delete_transient( $transient_name );
 				}
 			}
@@ -251,19 +201,13 @@ class Woocommerce_External_Product_Embed_Admin {
 	 * Display messages when transients are cleared.
 	 */
 	public function display_messages() {
-		if ( ! empty( $_GET['action'] ) && $_GET['action'] == 'clear_expired_transients' ) {
-			$number = $this->delete_external_product_transients('expired');
-
-			if ( $number > 0 ) {
-				echo "<div class='updated'><p>" . $number . __( ' expired transients were removed.', 'woocommerce-external-product-embed' ) . "</p></div>";
-			} else {
-				echo "<div class='error'><p>" . __( 'There are currently no expired transients.', 'woocommerce-external-product-embed' ) . "</p></div>";
-			}
-		} else if ( ! empty( $_GET['action']) && $_GET['action'] == 'clear_transients' ) {
+		if ( ! empty( $_GET['action']) && $_GET['action'] == 'clear_transients' ) {
 			$number = $this->delete_external_product_transients();
 
-			if ( $number > 0 ) {
-				echo "<div class='updated'><p>" . $number . __( ' transients were removed.', 'woocommerce-external-product-embed' ) . "</p></div>";
+			if ( $number == 1 ) {
+				echo "<div class='updated'><p>" . $number . __( ' product transient was removed.', 'woocommerce-external-product-embed' ) . "</p></div>";
+			} elseif ( $number > 1 ) {
+				echo "<div class='updated'><p>" . $number . __( ' products transients were removed.', 'woocommerce-external-product-embed' ) . "</p></div>";
 			} else {
 				echo "<div class='error'><p>" . __( 'There are currently no product transients.', 'woocommerce-external-product-embed' ) . "</p></div>";
 			}
