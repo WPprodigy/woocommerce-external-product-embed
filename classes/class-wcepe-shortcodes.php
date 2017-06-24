@@ -5,7 +5,7 @@
  * Set up the shortcodes used by the plugin.
  *
  * @class 	WCEPE_Shortcodes
- * @version 3.0
+ * @version 3.0.0
  * @author 	Caleb Burks
  *
  */
@@ -59,28 +59,27 @@ class WCEPE_Shortcodes {
 		$data_store = new WCEPE_Data_Store( $query_args );
 		$products = $data_store->get_loop_products();
 
-    // TODO: Abstract this out.
-    wp_enqueue_style( 'wcepe-styles' );
+		// TODO: Abstract this out.
+		wp_enqueue_style( 'wcepe-styles' );
 		wp_enqueue_style( 'dashicons' );
 
 		ob_start();
 
 		if ( $products ) {
 
-      do_action( "wcepe_shortcode_before_products_loop", $atts );
+			do_action( "wcepe_shortcode_before_products_loop", $atts );
 
-      foreach ( $products as $product ) {
-        // product_content_template - priority 10.
-        do_action( 'wcepe_product_content_template', $product );
-      }
+			foreach ( $products as $product ) {
+				// product_content_template - priority 10.
+				do_action( 'wcepe_product_content_template', $product );
+			}
 
-      do_action( "wcepe_shortcode_after_products_loop", $atts );
+			do_action( "wcepe_shortcode_after_products_loop", $atts );
 
-    }
+		}
 
-    return '<div class="woocommerce wcepe_external_product_wrap"><ul class="products wcepe_external_products">' . ob_get_clean() . '</ul></div>';
+		return '<div class="woocommerce wcepe_external_product_wrap"><ul class="products wcepe_external_products">' . ob_get_clean() . '</ul></div>';
 	}
-
 
 	/**
 	 * Show a single product, or list multiple products by SKU or ID.

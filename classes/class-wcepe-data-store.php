@@ -5,7 +5,7 @@
  * Retrieve/Save product data.
  *
  * @class 	WCEPE_Data_Store
- * @version 3.0
+ * @version 3.0.0
  * @author 	Caleb Burks
  *
  */
@@ -45,16 +45,16 @@ class WCEPE_Data_Store {
 	 * Get an array full of products to be displayed in the loop.
 	 */
 	public function get_loop_products() {
-    // Load from cache if available.
-    $loop_products = get_transient( $this->get_transient_name() );
+		// Load from cache if available.
+		$loop_products = get_transient( $this->get_transient_name() );
 
-    // Cache found, return that.
-    if ( false !== $loop_products ) {
-      return $loop_products;
-    }
+		// Cache found, return that.
+		if ( false !== $loop_products ) {
+			return $loop_products;
+		}
 
-    return $this->save_loop_products( $this->query_args, $this->get_transient_name() );
-  }
+		return $this->save_loop_products();
+	}
 
 	/**
 	 * Run the API requests and save all the products data into a single transient.
