@@ -2,7 +2,7 @@
 /**
  * WooCommerce External Product Embed - Admin
  *
- * Configure Admin Settings
+ * Setup admin settings.
  *
  * @class 	WCEPE_Admin
  * @version 3.0.0
@@ -21,6 +21,8 @@ class WCEPE_Admin {
 		add_action( 'admin_menu', array( __CLASS__, 'add_menu_item' ) );
 		add_action( 'admin_init', array( __CLASS__, 'settings_init' ) );
 		add_action( 'admin_notices', array( __CLASS__, 'display_messages' ) );
+
+		require_once 'class-wcepe-data-store.php';
 	}
 
 	/**
@@ -160,43 +162,9 @@ class WCEPE_Admin {
 
 		if ( ! empty( $_GET['action'] ) && ! empty( $_REQUEST['_wpnonce'] ) && wp_verify_nonce( $_REQUEST['_wpnonce'], 'wcepe_clear_transients' ) ) {
 			if ( $_GET['action'] === 'clear_transients' ) {
-				$number = self::delete_external_product_transients();
+				$data_store = new WCEPE_Data_Store();
+				$data_store->delete_transients();
 			}
-		}
-	}
-
-	/**
-	 * Look for and delete transients
-	 */
-	private function delete_external_product_transients() {
-		global $wpdb;
-
-		$transient_search = "SELECT `option_name` AS `name`, `option_value` AS `value`
-		FROM  $wpdb->options
-		WHERE `option_name` LIKE '%transient_wcepe_external_product_%'
-		ORDER BY `option_name`";
-
-		$transients = $wpdb->get_results( $transient_search );
-		$prefix     = '_transient_';
-
-		if ( ! empty( $transients ) ) {
-
-			$transients_to_clear = array();
-			foreach ( $transients as $result ) {
-				$transients_to_clear[] = $result->name;
-			}
-
-			$number_to_delete = count( $transients_to_clear );
-
-			// Delete the transients
-			foreach( $transients_to_clear as $transient ) {
-				if ( substr( $transient, 0, strlen( $prefix ) ) == $prefix ) {
-					$transient_name = substr( $transient, strlen( $prefix ) );
-					delete_transient( $transient_name );
-				}
-			}
-
-			return $number_to_delete;
 		}
 	}
 
@@ -205,7 +173,8 @@ class WCEPE_Admin {
 	 */
 	public static function display_messages() {
 		if ( ! empty( $_GET['action']) && $_GET['action'] == 'clear_transients' ) {
-			$number = self::delete_external_product_transients();
+			$data_store = new WCEPE_Data_Store();
+			$number = $data_store->delete_transients();
 
 			if ( $number == 1 ) {
 				echo "<div class='updated'><p>" . $number . __( ' product transient was removed.', 'woocommerce-external-product-embed' ) . "</p></div>";

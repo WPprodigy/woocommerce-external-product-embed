@@ -25,7 +25,7 @@ class WCEPE_Data_Store {
 	/**
 	 * Constructor.
 	 */
-	public function __construct( $query_args ) {
+	public function __construct( $query_args = array() ) {
 		$this->query_args = $query_args;
 
 		// API Client Helper
@@ -151,6 +151,42 @@ class WCEPE_Data_Store {
 		}
 
 		return $time;
+	}
+
+
+	/**
+	 * Delete all transients created by WCEPE.
+	 */
+	public static function delete_transients() {
+		global $wpdb;
+
+		$transient_search = "SELECT `option_name` AS `name`, `option_value` AS `value`
+		FROM  $wpdb->options
+		WHERE `option_name` LIKE '%transient_wcepe_loop__%'
+		ORDER BY `option_name`";
+
+		$transients = $wpdb->get_results( $transient_search );
+		$prefix     = '_transient_';
+
+		if ( ! empty( $transients ) ) {
+
+			$transients_to_clear = array();
+			foreach ( $transients as $result ) {
+				$transients_to_clear[] = $result->name;
+			}
+
+			$number_to_delete = count( $transients_to_clear );
+
+			// Delete the transients
+			foreach( $transients_to_clear as $transient ) {
+				if ( substr( $transient, 0, strlen( $prefix ) ) == $prefix ) {
+					$transient_name = substr( $transient, strlen( $prefix ) );
+					delete_transient( $transient_name );
+				}
+			}
+
+			return $number_to_delete;
+		}
 	}
 
 }
