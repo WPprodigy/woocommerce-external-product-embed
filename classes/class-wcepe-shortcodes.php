@@ -33,9 +33,9 @@ class WCEPE_Shortcodes {
 			add_shortcode( apply_filters( "{$shortcode}_shortcode_tag", $shortcode ), $function );
 		}
 
-    require_once 'class-wcepe-data-store.php';
+		require_once 'class-wcepe-data-store.php';
 
-    add_action( 'wcepe_product_content_template', __CLASS__ . '::product_content_template', 10 );
+		add_action( 'wcepe_product_content_template', __CLASS__ . '::product_content_template', 10 );
 	}
 
 	/**
@@ -55,9 +55,8 @@ class WCEPE_Shortcodes {
 	/**
 	 * Loop over products.
 	 */
-	private static function product_loop( $query_args, $atts, $loop_name ) {
-		$transient_name = 'wcepe_loop_' . $loop_name . substr( md5( json_encode( $query_args ) . $loop_name ), 25 );
-		$data_store = new WCEPE_Data_Store( $query_args, $transient_name );
+	private static function product_loop( $query_args, $atts ) {
+		$data_store = new WCEPE_Data_Store( $query_args );
 		$products = $data_store->get_loop_products();
 
     // TODO: Abstract this out.
@@ -68,14 +67,14 @@ class WCEPE_Shortcodes {
 
 		if ( $products ) {
 
-      do_action( "woocommerce_shortcode_before_{$loop_name}_loop", $atts );
+      do_action( "wcepe_shortcode_before_products_loop", $atts );
 
       foreach ( $products as $product ) {
         // product_content_template - priority 10.
         do_action( 'wcepe_product_content_template', $product );
       }
 
-      do_action( "woocommerce_shortcode_after_{$loop_name}_loop", $atts );
+      do_action( "wcepe_shortcode_after_products_loop", $atts );
 
     }
 
@@ -84,9 +83,9 @@ class WCEPE_Shortcodes {
 
 
 	/**
-   * Show a single product, or list multiple products by SKU or ID.
-   */
-  public static function products( $atts ) {
+	 * Show a single product, or list multiple products by SKU or ID.
+	 */
+	 public static function products( $atts ) {
 		if ( empty( $atts ) ) {
 			return '';
 		}
@@ -161,7 +160,7 @@ class WCEPE_Shortcodes {
 			}
 		}
 
-		return self::product_loop( $query_args, $atts, 'products' );
+		return self::product_loop( $query_args, $atts );
 	}
 
 }
