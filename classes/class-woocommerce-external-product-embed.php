@@ -30,13 +30,16 @@ class Woocommerce_External_Product_Embed {
 		// Register Shortcodes
 		add_shortcode( 'external_product', array( $this, 'external_product_shortcode' ) );
 		add_shortcode( 'recent_external_products', array( $this, 'recent_external_products_shortcode' ) );
-	} 
+
+		require_once 'class-wcepe-shortcodes.php';
+		add_action( 'init', array( 'WCEPE_Shortcodes', 'init' ) );
+	}
 
 	/**
 	 * Load Text Domain
 	 */
 	public function load_text_domain() {
-		load_plugin_textdomain( 'woocommerce-external-product-embed', false, dirname( plugin_basename( __FILE__ ) ) . '/languages' ); 
+		load_plugin_textdomain( 'woocommerce-external-product-embed', false, dirname( plugin_basename( __FILE__ ) ) . '/languages' );
 	}
 
 
