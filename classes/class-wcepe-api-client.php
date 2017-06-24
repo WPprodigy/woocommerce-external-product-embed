@@ -25,8 +25,8 @@ class WCEPE_API_Client {
 	 */
 	private function connect() {
     $settings = get_option( 'wcepe_settings' );
-    $options  = [
-      'wp_api' => true,
+		$options  = [
+			'wp_api' => true,
       'version' => 'wc/v2'
     ];
 
@@ -56,26 +56,16 @@ class WCEPE_API_Client {
 	 * Get products.
 	 */
 	public function get_products( $args = array() ) {
-    $wc_api = $this->connect();
-    // print_r($args);
+		$wc_api = $this->connect();
+		print_r($args);
+		$results = $wc_api->get( 'products/', $args );
 
-    $default_args = apply_filters( 'wcepe_default_query_args', array(
-      'status'  => 'publish',
-      'order'   => 'desc',
-      'orderby' => 'date'
-    ) );
+		$products = array();
+		foreach ( $results as $product ) {
+			$products[] = $this->get_product_data( $product );
+		}
 
-    $results = $wc_api->get(
-      'products/',
-      array_merge( $default_args, $args)
-    );
-
-    $products = array();
-    foreach ( $results as $product ) {
-      $products[] = $this->get_product_data( $product );
-    }
-
-    return $products;
+		return $products;
 	}
 
   /**
@@ -84,7 +74,7 @@ class WCEPE_API_Client {
 	public function get_product_data( $product ) {
     // List of values we need from the API for a single product.
     $needed_data = apply_filters( 'wcepe_product_needed_data', array(
-      'title'  => 'name',
+			'title'  => 'name',
 			'image'  => array( 'src', 'name', 'alt' ),
 			'price'  => 'price_html',
 			'link'   => 'permalink',

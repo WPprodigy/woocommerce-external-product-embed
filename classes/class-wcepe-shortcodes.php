@@ -42,7 +42,7 @@ class WCEPE_Shortcodes {
     add_action( 'wcepe_product_content_template', __CLASS__ . '::product_content_template', 10 );
 	}
 
-  /**
+	/**
 	 * Get the template file.
 	 */
 	public static function product_content_template( $product ) {
@@ -53,16 +53,16 @@ class WCEPE_Shortcodes {
 			$template = plugin_dir_path( dirname( __FILE__ ) ) . 'templates/shortcodes/external-product-single.php';
 		}
 
-    include( $template );
+		include( $template );
 	}
 
-  /**
+	/**
 	 * Loop over products.
 	 */
 	private static function product_loop( $query_args, $atts, $loop_name ) {
-    $transient_name = 'wcepe_loop_' . $loop_name . substr( md5( json_encode( $query_args ) . $loop_name ), 25 );
-    $data_store = new WCEPE_Data_Store( $query_args, $transient_name );
-    $products = $data_store->get_loop_products();
+		$transient_name = 'wcepe_loop_' . $loop_name . substr( md5( json_encode( $query_args ) . $loop_name ), 25 );
+		$data_store = new WCEPE_Data_Store( $query_args, $transient_name );
+		$products = $data_store->get_loop_products();
 
     // TODO: Abstract this out.
     wp_enqueue_style( 'wcepe-styles' );
@@ -83,105 +83,82 @@ class WCEPE_Shortcodes {
 
     }
 
-    return '<div class="woocommerce wcepe_external_product_wrap columns-' . 4 . '"><ul class="products wcepe_external_products">' . ob_get_clean() . '</ul></div>';
+    return '<div class="woocommerce wcepe_external_product_wrap"><ul class="products wcepe_external_products">' . ob_get_clean() . '</ul></div>';
 	}
 
 
-  /**
+	/**
    * Show a single product, or list multiple products by SKU or ID.
    */
   public static function products( $atts ) {
-  	$atts = shortcode_atts( array(
-  		// 'ids'     => '99,96,2342',
-  		'skus'    => '   skuhappy, sku2, skupatient  ',
-  	), $atts, 'products' );
+		if ( empty( $atts ) ) {
+			return '';
+		}
 
-    $query_args = array();
-    $query_args['add_per_page'] = 10;
+		$atts = shortcode_atts( array(
+			'orderby'  => 'title',
+			'order'    => 'desc',
+			'number'   => 12,
+			'per_page' => 0,  // Will override 'number'
+			'ids'      => '', // Comma-seperated IDs
+			'skus'     => '', // Comma-seperated SKUs
+			'category' => '', // Comma-seperated Cat IDs
+			'recent'   => false,
+			'on_sale'  => false,
+			'featured' => false
+		), $atts, 'products' );
 
-  	if ( ! empty( $atts['skus'] ) ) {
-      // WC Core won't accept an array. So we need to clear out all whitespace.
-      $skus = implode( ",", array_map( 'trim', explode( ',', $atts['skus'] ) ) );
+		$min_per_page = 0;
+		$query_args   = array(
+			'status'       => 'publish',
+			'orderby'      => $atts['orderby'],
+			'order'        => $atts['order'],
+			'per_page'     => absint( $atts['number'] ),
+		);
 
-      $query_args['sku'] = $skus;
-      $query_args['add_per_page'] += count( explode( ',', $skus ) );
-  	}
+		if ( ! empty( $atts['ids'] ) ) {
+			// IDs can be an array, but for consistency with sku and category ¯\_(ツ)_/¯
+			$ids = implode( ",", array_map( 'trim', explode( ',', absint( $atts['ids'] ) ) ) );
+			$query_args['include'] = $ids;
+			$min_per_page += count( explode( ',', $ids ) );
+		}
 
-    if ( ! empty( $atts['ids'] ) ) {
-      // IDs can be an array, but for consistency with sku and category ¯\_(ツ)_/¯
-      $ids = implode( ",", array_map( 'trim', explode( ',', $atts['ids'] ) ) );
+		if ( ! empty( $atts['skus'] ) ) {
+			// WC Core won't accept an array. So we need to clear out all whitespace.
+			$skus = implode( ",", array_map( 'trim', explode( ',', $atts['skus'] ) ) );
+			$query_args['sku'] = $skus;
+			$min_per_page += count( explode( ',', $skus ) );
+		}
 
-      $query_args['include'] = $ids;
-      $query_args['add_per_page'] += count( explode( ',', $ids ) );
-  	}
+		if ( ! empty( $atts['category'] ) ) {
+			// WC Core won't accept an array. So we need to clear out all whitespace.
+			$category_ids = implode( ",", array_map( 'trim', explode( ',', absint( $atts['category'] ) ) ) );
+			$query_args['category'] = $category_ids;
+		}
 
-  	return self::product_loop( $query_args, $atts, 'products' );
-  }
+		// Not really necessary, but figured people would ask about the recent shortcode.
+		if ( $atts['recent'] ) {
+			$query_args['orderby'] = 'date';
+		}
 
-  /**
-   * List products in a category/categories.
-   */
-  public static function product_category( $atts ) {
-  	$atts = shortcode_atts( array(
-  		'category' => ' 9,  11,  234223  ', // IDs
-      'number' => '6',
-  	), $atts, 'product_category' );
+		if ( $atts['on_sale'] ) {
+			$query_args['on_sale'] = true;
+		}
 
-    $query_args = array();
-    $query_args['per_page'] = trim( $atts['number'] );
+		if ( $atts['featured'] ) {
+			$query_args['featured'] = true;
+		}
 
-  	if ( ! empty( $atts['category'] ) ) {
-      // WC Core won't accept an array. So we need to clear out all whitespace.
-      $category_ids = implode( ",", array_map( 'trim', explode( ',', $atts['category'] ) ) );
-      $query_args['category'] = $category_ids;
-  	}
+		if ( ! empty( $atts['per_page'] ) ) {
+			$query_args['per_page'] = absint( $atts['per_page'] );
+		}
 
-  	return self::product_loop( $query_args, $atts, 'product_category' );
-  }
+		// Ensure enough products are shown if IDs or SKUs were manually entered.
+		if ( $query_args['per_page'] < $min_per_page ) {
+			$query_args['per_page'] = $min_per_page;
+		}
 
-  /**
-	 * List recent products.
-	 */
-	public static function recent_products( $atts ) {
-    $atts = shortcode_atts( array(
-      'number' => '5',
-  	), $atts, 'recent_products' );
-
-    $query_args = array();
-    $query_args['per_page'] = trim( $atts['number'] );
-    $query_args['orderby'] = 'date';
-
-  	return self::product_loop( $query_args, $atts, 'recent_products' );
-	}
-
-  /**
-	 * List on-sale products.
-	 */
-	public static function sale_products( $atts ) {
-    $atts = shortcode_atts( array(
-      'number' => '10',
-  	), $atts, 'sale_products' );
-
-    $query_args = array();
-    $query_args['per_page'] = trim( $atts['number'] );
-    $query_args['on_sale'] = true;
-
-  	return self::product_loop( $query_args, $atts, 'sale_products' );
-	}
-
-  /**
-	 * List on-sale products.
-	 */
-	public static function featured_products( $atts ) {
-    $atts = shortcode_atts( array(
-      'number' => '10',
-  	), $atts, 'featured_products' );
-
-    $query_args = array();
-    $query_args['per_page'] = trim( $atts['number'] );
-    $query_args['featured'] = true;
-
-  	return self::product_loop( $query_args, $atts, 'featured_products' );
+		return self::product_loop( $query_args, $atts, 'products' );
 	}
 
 }

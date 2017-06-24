@@ -58,19 +58,19 @@ class WCEPE_Data_Store {
 	 * Run the API requests and save all the products data into a single transient.
 	 */
 	private function save_loop_products() {
-    // Query the data from the REST API.
-    $class = new WCEPE_API_Client();
-    $products = $class->get_products( $this->query_args );
+		// Query the data from the REST API.
+		$class = new WCEPE_API_Client();
+		$products = $class->get_products( $this->query_args );
 
-    $data = array();
-    foreach ( $products as $product ) {
-      $data[] = $this->prepare_product_data( $product );
-    }
+		$data = array();
+		foreach ( $products as $product ) {
+			$data[] = $this->prepare_product_data( $product );
+		}
 
-    // Create wcepe_loop_* transient.
-    set_transient( $this->transient_name, $data, $this->get_transient_time() );
+		// Create wcepe_loop_* transient.
+		set_transient( $this->transient_name, $data, $this->get_transient_time() );
 
-    return $data;
+		return $data;
 	}
 
   /**
