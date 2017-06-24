@@ -87,6 +87,9 @@ class WCEPE_Data_Store {
         }
       } else if( 'rating' === $key ) {
         $product_data[ sanitize_key( $key ) ] = $this->prepare_product_rating( $value );
+      } else if( 'price' === $key ) {
+        // TODO: Sanitize HTML?
+        $product_data[ sanitize_key( $key ) ] = $value;
       } else {
         $product_data[ sanitize_key( $key ) ] = sanitize_text_field( $value );
       }

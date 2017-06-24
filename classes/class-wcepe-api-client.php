@@ -53,66 +53,6 @@ class WCEPE_API_Client {
 	}
 
   /**
-	 * Get products by ID.
-	 */
-	public function get_products_by_id( $ids = '99,96,2342' ) {
-    return $this->get_products( [
-      'include' => $ids,
-      'per_page' => count( explode( ",", $ids ) )
-    ] );
-	}
-
-  /**
-	 * Get products by SKU.
-	 */
-	public function get_products_by_sku( $skus = 'sku1,sku2' ) {
-    return $this->get_products( [
-      'sku' => $skus,
-      'per_page' => count( explode( ",", $skus ) )
-    ] );
-	}
-
-  /**
-	 * Get products by category.
-	 */
-	public function get_products_by_category( $category_ids = '9,11', $number = 5 ) {
-    return $this->get_products( [
-      'category' => $category_ids,
-      'per_page' => $number
-    ] );
-	}
-
-  /**
-	 * Get featured products.
-	 */
-	public function get_featured_products( $number = 5 ) {
-    return $this->get_products( [
-      'featured' => true,
-      'per_page' => $number
-    ] );
-	}
-
-  /**
-	 * Get on-sale products.
-	 */
-	public function get_onsale_products( $number = 5 ) {
-    return $this->get_products( [
-      'on_sale' => true,
-      'per_page' => $number
-    ] );
-	}
-
-  /**
-	 * Get recent products.
-	 */
-	public function get_recent_products( $number = 5 ) {
-    return $this->get_products( [
-      'per_page' => $number,
-      'orderby' => 'date'
-    ] );
-	}
-
-  /**
 	 * Get products.
 	 */
 	public function get_products( $args = array() ) {

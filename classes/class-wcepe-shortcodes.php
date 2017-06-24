@@ -89,9 +89,6 @@ class WCEPE_Shortcodes {
 
   /**
    * Show a single product, or list multiple products by SKU or ID.
-   *
-   * @param array $atts
-   * @return string
    */
   public static function products( $atts ) {
   	$atts = shortcode_atts( array(
@@ -121,5 +118,70 @@ class WCEPE_Shortcodes {
   	return self::product_loop( $query_args, $atts, 'products' );
   }
 
+  /**
+   * List products in a category/categories.
+   */
+  public static function product_category( $atts ) {
+  	$atts = shortcode_atts( array(
+  		'category' => ' 9,  11,  234223  ', // IDs
+      'number' => '6',
+  	), $atts, 'product_category' );
+
+    $query_args = array();
+    $query_args['per_page'] = trim( $atts['number'] );
+
+  	if ( ! empty( $atts['category'] ) ) {
+      // WC Core won't accept an array. So we need to clear out all whitespace.
+      $category_ids = implode( ",", array_map( 'trim', explode( ',', $atts['category'] ) ) );
+      $query_args['category'] = $category_ids;
+  	}
+
+  	return self::product_loop( $query_args, $atts, 'product_category' );
+  }
+
+  /**
+	 * List recent products.
+	 */
+	public static function recent_products( $atts ) {
+    $atts = shortcode_atts( array(
+      'number' => '5',
+  	), $atts, 'recent_products' );
+
+    $query_args = array();
+    $query_args['per_page'] = trim( $atts['number'] );
+    $query_args['orderby'] = 'date';
+
+  	return self::product_loop( $query_args, $atts, 'recent_products' );
+	}
+
+  /**
+	 * List on-sale products.
+	 */
+	public static function sale_products( $atts ) {
+    $atts = shortcode_atts( array(
+      'number' => '10',
+  	), $atts, 'sale_products' );
+
+    $query_args = array();
+    $query_args['per_page'] = trim( $atts['number'] );
+    $query_args['on_sale'] = true;
+
+  	return self::product_loop( $query_args, $atts, 'sale_products' );
+	}
+
+  /**
+	 * List on-sale products.
+	 */
+	public static function featured_products( $atts ) {
+    $atts = shortcode_atts( array(
+      'number' => '10',
+  	), $atts, 'featured_products' );
+
+    $query_args = array();
+    $query_args['per_page'] = trim( $atts['number'] );
+    $query_args['featured'] = true;
+
+  	return self::product_loop( $query_args, $atts, 'featured_products' );
+	}
 
 }
