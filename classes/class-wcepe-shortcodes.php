@@ -59,7 +59,6 @@ class WCEPE_Shortcodes {
 		$data_store = new WCEPE_Data_Store( $query_args );
 		$products = $data_store->get_loop_products();
 
-		// TODO: Abstract this out.
 		wp_enqueue_style( 'wcepe-styles' );
 		wp_enqueue_style( 'dashicons' );
 
@@ -78,11 +77,14 @@ class WCEPE_Shortcodes {
 
 		}
 
-		return '<div class="woocommerce wcepe_external_product_wrap"><ul class="products wcepe_external_products">' . ob_get_clean() . '</ul></div>';
+		$opening = apply_filters( 'wcepe_products_loop_wrapper_open', '<div class="woocommerce wcepe_external_product_wrap"><ul class="products wcepe_external_products">' );
+		$closing = apply_filters( 'wcepe_products_loop_wrapper_close', '</ul></div>' );
+
+		return $opening . ob_get_clean() . $closing;
 	}
 
 	/**
-	 * Show a single product, or list multiple products by SKU or ID.
+	 * Shortcode. Show a single product, or list multiple products by SKU or ID.
 	 */
 	 public static function products( $atts ) {
 		if ( empty( $atts ) ) {
