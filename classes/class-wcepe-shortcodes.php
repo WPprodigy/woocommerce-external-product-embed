@@ -115,7 +115,7 @@ class WCEPE_Shortcodes {
 
 		if ( ! empty( $atts['ids'] ) ) {
 			// IDs can be an array, but for consistency with sku and category ¯\_(ツ)_/¯
-			$ids = implode( ",", array_map( 'trim', explode( ',', absint( $atts['ids'] ) ) ) );
+			$ids = implode( ",", array_map( 'trim', explode( ',', $atts['ids'] ) ) );
 			$query_args['include'] = $ids;
 			$min_per_page += count( explode( ',', $ids ) );
 		}
@@ -129,7 +129,7 @@ class WCEPE_Shortcodes {
 
 		if ( ! empty( $atts['category'] ) ) {
 			// WC Core won't accept an array. So we need to clear out all whitespace.
-			$category_ids = implode( ",", array_map( 'trim', explode( ',', absint( $atts['category'] ) ) ) );
+			$category_ids = implode( ",", array_map( 'trim', explode( ',', $atts['category'] ) ) );
 			$query_args['category'] = $category_ids;
 		}
 
@@ -146,18 +146,14 @@ class WCEPE_Shortcodes {
 			$query_args['featured'] = true;
 		}
 
-		// Ensure enough products are shown if IDs or SKUs were manually entered.
-		if ( $query_args['number'] < $min_per_page ) {
-			$query_args['per_page'] =  absint( $min_per_page );
-		}
-
 		// Allow 'per_page' to override 'number' for those used to WC core shortcodes.
 		if ( ! empty( $atts['per_page'] ) ) {
 			$query_args['per_page'] = absint( $atts['per_page'] );
+		}
 
-			if ( $query_args['per_page'] < $min_per_page ) {
-				$query_args['per_page'] =  absint( $min_per_page );
-			}
+		// Ensure enough products are shown if IDs or SKUs were manually entered.
+		if ( $query_args['per_page'] < $min_per_page ) {
+			$query_args['per_page'] =  absint( $min_per_page );
 		}
 
 		return self::product_loop( $query_args, $atts );
