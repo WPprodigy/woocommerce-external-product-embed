@@ -39,6 +39,19 @@
 	margin-bottom: .5407911001em;
 }
 
+.wcepe_external_product .onsale {
+    border: 1px solid;
+    border-color: #43454b;
+    color: #43454b;
+    padding: .202em .6180469716em;
+    font-size: .875em;
+    text-transform: uppercase;
+    font-weight: 600;
+    display: inline-block;
+    margin-bottom: 1em;
+    border-radius: 3px;
+}
+
 .wcepe_external_product .price {
 	display: block;
 	color: #6d6d6d;

@@ -78,11 +78,12 @@ class WCEPE_API_Client {
 	public function get_product_data( $product ) {
 		// List of values we need from the API for a single product.
 		$needed_data = apply_filters( 'wcepe_product_needed_data', array(
-			'title'  => 'name',
-			'image'  => array( 'src', 'name', 'alt' ),
-			'price'  => 'price_html',
-			'link'   => 'permalink',
-			'rating' => 'average_rating'
+			'title'   => 'name',
+			'image'   => array( 'src', 'name', 'alt' ),
+			'price'   => 'price_html',
+			'link'    => 'permalink',
+			'rating'  => 'average_rating',
+			'on_sale' => 'on_sale'
 		) );
 
 		$product_data = array();

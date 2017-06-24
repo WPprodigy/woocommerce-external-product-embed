@@ -28,6 +28,10 @@ if ( empty( $product ) ) {
 			</p>
 		<?php endif; ?>
 
+		<?php if ( $product['on_sale'] ) : ?>
+			<span class="onsale">Sale!</span>
+		<?php endif; ?>
+
 		<span class="price"><?php echo $product['price'] ?></span>
 	</a>
 
