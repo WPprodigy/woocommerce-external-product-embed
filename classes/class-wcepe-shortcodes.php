@@ -23,10 +23,6 @@ class WCEPE_Shortcodes {
 	public static function init() {
 		$shortcodes = array(
 			'wcepe_products'           => __CLASS__ . '::products',
-			'wcepe_product_category'   => __CLASS__ . '::product_category',
-      'wcepe_recent_products'    => __CLASS__ . '::recent_products',
-      'wcepe_sale_products'      => __CLASS__ . '::sale_products',
-      'wcepe_featured_products'  => __CLASS__ . '::featured_products',
 			// 'wcepe_product_categories' => __CLASS__ . '::product_categories',
 			// 'wcepe_add_to_cart'        => __CLASS__ . '::product_add_to_cart',
 			// 'wcepe_add_to_cart_url'    => __CLASS__ . '::product_add_to_cart_url',
@@ -95,7 +91,7 @@ class WCEPE_Shortcodes {
 			return '';
 		}
 
-		$atts = shortcode_atts( array(
+		$default_atts = apply_filters( 'wcepe_default_products_atts', array(
 			'orderby'  => 'title',
 			'order'    => 'desc',
 			'number'   => 12,
@@ -106,15 +102,17 @@ class WCEPE_Shortcodes {
 			'recent'   => false,
 			'on_sale'  => false,
 			'featured' => false
-		), $atts, 'products' );
+		) );
+
+		$atts = shortcode_atts( $default_atts, $atts, 'wcepe_products' );
 
 		$min_per_page = 0;
-		$query_args   = array(
+		$query_args   = apply_filters( 'wcepe_default_products_query_args', array(
 			'status'       => 'publish',
 			'orderby'      => $atts['orderby'],
 			'order'        => $atts['order'],
 			'per_page'     => absint( $atts['number'] ),
-		);
+		) );
 
 		if ( ! empty( $atts['ids'] ) ) {
 			// IDs can be an array, but for consistency with sku and category ¯\_(ツ)_/¯
@@ -149,13 +147,18 @@ class WCEPE_Shortcodes {
 			$query_args['featured'] = true;
 		}
 
-		if ( ! empty( $atts['per_page'] ) ) {
-			$query_args['per_page'] = absint( $atts['per_page'] );
+		// Ensure enough products are shown if IDs or SKUs were manually entered.
+		if ( $query_args['number'] < $min_per_page ) {
+			$query_args['per_page'] =  absint( $min_per_page );
 		}
 
-		// Ensure enough products are shown if IDs or SKUs were manually entered.
-		if ( $query_args['per_page'] < $min_per_page ) {
-			$query_args['per_page'] = $min_per_page;
+		// Allow 'per_page' to override 'number' for those used to WC core shortcodes.
+		if ( ! empty( $atts['per_page'] ) ) {
+			$query_args['per_page'] = absint( $atts['per_page'] );
+
+			if ( $query_args['per_page'] < $min_per_page ) {
+				$query_args['per_page'] =  absint( $min_per_page );
+			}
 		}
 
 		return self::product_loop( $query_args, $atts, 'products' );
