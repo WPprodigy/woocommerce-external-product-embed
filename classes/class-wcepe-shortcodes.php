@@ -1,6 +1,6 @@
 <?php
 /**
- * WooCommerce External Product Embed - API Client
+ * WooCommerce External Product Embed - Shortcodes
  *
  * Set up the shortcodes used by the plugin.
  *
@@ -37,6 +37,8 @@ class WCEPE_Shortcodes {
 			add_shortcode( apply_filters( "{$shortcode}_shortcode_tag", $shortcode ), $function );
 		}
 
+    require_once 'class-wcepe-data-store.php';
+
     add_action( 'wcepe_product_content_template', __CLASS__ . '::product_content_template', 10 );
 	}
 
@@ -57,12 +59,10 @@ class WCEPE_Shortcodes {
   /**
 	 * Loop over products.
 	 */
-	private static function product_loop( $query_args, $atts, $loop_name = 'test' ) {
-    // TODO: Remove
-    require_once 'class-wcepe-api-client.php';
-    $class = new WCEPE_API_Client();
-    $products = $class->get_products( $query_args );
-
+	private static function product_loop( $query_args, $atts, $loop_name ) {
+    $transient_name = 'wcepe_loop_' . $loop_name . substr( md5( json_encode( $query_args ) . $loop_name ), 25 );
+    $data_store = new WCEPE_Data_Store( $query_args, $transient_name );
+    $products = $data_store->get_loop_products();
 
     // TODO: Abstract this out.
     wp_enqueue_style( 'wcepe-styles' );

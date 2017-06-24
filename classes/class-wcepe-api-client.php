@@ -10,13 +10,13 @@
  *
  */
 
-use Automattic\WooCommerce\Client;
-use Automattic\WooCommerce\HttpClient\HttpClientException;
-
 // Exit if accessed directly
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
+
+use Automattic\WooCommerce\Client;
+use Automattic\WooCommerce\HttpClient\HttpClientException;
 
 class WCEPE_API_Client {
 
@@ -164,11 +164,6 @@ class WCEPE_API_Client {
     }
 
     return apply_filters( 'wcepe_product_data',  $product_data );
-	}
-
-
-	public function test_display() {
-    return $this->get_recent_products();
 	}
 
 }
