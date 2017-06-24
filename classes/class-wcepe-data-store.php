@@ -61,8 +61,12 @@ class WCEPE_Data_Store {
 	 */
 	private function save_loop_products() {
 		// Query the data from the REST API.
-		$class = new WCEPE_API_Client();
-		$products = $class->get_products( $this->query_args );
+		$wc_api = new WCEPE_API_Client();
+		$products = $wc_api->get_products( $this->query_args );
+
+		if ( ! is_array( $products ) ) {
+			return;
+		}
 
 		$data = array();
 		foreach ( $products as $product ) {
