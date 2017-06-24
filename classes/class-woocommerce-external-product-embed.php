@@ -25,7 +25,8 @@ class Woocommerce_External_Product_Embed {
 		add_action( 'plugins_loaded', array( $this, 'load_text_domain' ) );
 
 		// Load Admin
-		require_once 'class-woocommerce-external-product-embed-admin.php';
+		require_once 'class-wcepe-admin.php';
+		add_action( 'init', array( 'WCEPE_Admin', 'init' ) );
 
 		// Register Shortcodes
 		require_once 'class-wcepe-shortcodes.php';
