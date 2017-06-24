@@ -21,6 +21,9 @@ add_action( 'plugins_loaded', 'wcepe_load_after_plugins_loaded' );
 
 function wcepe_load_after_plugins_loaded() {
 	if ( ! class_exists( "Woocommerce_External_Product_Embed" ) ) {
+		// Autoloader for the external "WooCommerce API - PHP Client".
+		require_once(__DIR__ . '/vendor/autoload.php');
+
 		require_once( 'classes/class-woocommerce-external-product-embed.php' );
 	}
 }

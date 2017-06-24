@@ -10,6 +10,8 @@
  *
  */
 
+use Automattic\WooCommerce\Client;
+
 // Exit if accessed directly
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
@@ -28,30 +30,23 @@ class Woocommerce_External_Product_Embed_Transients {
 
 		// Admin Settings
 		require_once 'class-woocommerce-external-product-embed-admin.php';
-	} 
+	}
 
 	/**
 	 * Connect to the REST API
 	 */
 	private function store_api_info() {
-		if ( ! class_exists( "WC_API_Client" ) ) {
-			require_once 'API-Client-Library/woocommerce-api.php';
-		}
-
 		$setting         = get_option( 'wcepe_settings' );
 		$store_url       = $setting['wcepe_store_url'];
 		$consumer_key    = $setting['wcepe_consumer_key'];
 		$consumer_secret = $setting['wcepe_consumer_secret'];
 
 		$options = array(
-			'debug'           => false,
-			'return_as_array' => false,
-			'validate_url'    => false,
-			'timeout'         => 30,
-			'ssl_verify'      => false,
+			'wp_api' => true,
+			'version' => 'wc/v1'
 		);
 
-		$wc_api = new WC_API_Client( $store_url, $consumer_key, $consumer_secret, $options );
+		$wc_api = new Client( $store_url, $consumer_key, $consumer_secret, $options );
 
 		return $wc_api;
 	}
@@ -62,7 +57,7 @@ class Woocommerce_External_Product_Embed_Transients {
 	public function get_product() {
 		$wc_api = $this->store_api_info();
 
-		return $wc_api->products->get( $this->product_id );
+		return $wc_api->get( 'products/' . $this->product_id );
 	}
 
 	/**
@@ -70,9 +65,10 @@ class Woocommerce_External_Product_Embed_Transients {
 	 */
 	public function get_recent_products( $number ) {
 		$wc_api = $this->store_api_info();
-		$recent_product_objects = $wc_api->products->get( $id = null,  array( 'filter[limit]' => $number ) );
+		$params = array( 'per_page' => $number );
+		$recent_product_objects = $wc_api->get( 'products/', $params );
 
-		return $recent_product_objects->products;
+		return $recent_product_objects;
 	}
 
 	/**
@@ -104,18 +100,17 @@ class Woocommerce_External_Product_Embed_Transients {
 
 	/**
 	 * Checks if the product exists
+	 * TODO: get rid of this. Huge bottleneck.
 	 */
 	private function does_the_product_exist() {
-		$number = apply_filters( 'wcepe_filter_number_of_products', '999' );
-
-		$wc_api          = $this->store_api_info();
-		$object_products = $wc_api->products->get( $id = null,  array( 'filter[limit]' => $number ) );
-		$products        = $object_products->products;
+		$wc_api   = $this->store_api_info();
+		$params   = array( 'per_page' => 15 );
+		$products = $wc_api->get( 'products/', $params );
 
 		$ids = array();
 		// Get all ID's in an array
 		foreach ( $products as $product ) {
-			$ids[] = $product->id;
+			$ids[] = $product['id'];
 		}
 
 		if ( in_array( $this->product_id, $ids ) ) {
@@ -130,7 +125,7 @@ class Woocommerce_External_Product_Embed_Transients {
 	 */
 	private function product_title() {
 		$product = $this->get_product();
-		$title = apply_filters( 'wcepe_filter_title', $product->product->title );
+		$title = apply_filters( 'wcepe_filter_title', $product['name'] );
 
 		return $title;
 	}
@@ -140,9 +135,9 @@ class Woocommerce_External_Product_Embed_Transients {
 	 */
 	private function product_image() {
 		$product = $this->get_product();
-		$image = apply_filters( 'wcepe_filter_image', $product->product->images[0]->src );
+		$image_src = apply_filters( 'wcepe_filter_image', $product['images'][0]['src'] );
 
-		return $image;
+		return $image_src;
 	}
 
 	/**
@@ -150,7 +145,7 @@ class Woocommerce_External_Product_Embed_Transients {
 	 */
 	private function product_price() {
 		$product = $this->get_product();
-		$price = apply_filters( 'wcepe_filter_price', $product->product->price_html );
+		$price = apply_filters( 'wcepe_filter_price', $product['price_html'] );
 
 		return $price;
 	}
@@ -160,7 +155,7 @@ class Woocommerce_External_Product_Embed_Transients {
 	 */
 	private function product_link() {
 		$product = $this->get_product();
-		$link = apply_filters( 'wcepe_filter_link', $product->product->permalink );
+		$link = apply_filters( 'wcepe_filter_link', $product['permalink'] );
 
 		return $link;
 	}
@@ -171,7 +166,7 @@ class Woocommerce_External_Product_Embed_Transients {
 	 */
 	private function product_rating() {
 		$product = $this->get_product();
-		$rating = apply_filters( 'wcepe_filter_rating', $product->product->average_rating );
+		$rating = apply_filters( 'wcepe_filter_rating', $product['average_rating'] );
 
 		$pixel_width = array(
 			'5'  => '99px',
@@ -187,15 +182,15 @@ class Woocommerce_External_Product_Embed_Transients {
 
 		// Choose which width should be shown
 		if ( $rating >= '5' ) {
-			$width = $filtered_pixel_width[5]; 
+			$width = $filtered_pixel_width[5];
 		} else if ( $rating >= '4' ) {
-			$width = $filtered_pixel_width[4]; 
+			$width = $filtered_pixel_width[4];
 		} else if ( $rating >= '3' ) {
-			$width = $filtered_pixel_width[3]; 
+			$width = $filtered_pixel_width[3];
 		} else if ( $rating >= '2' ) {
-			$width = $filtered_pixel_width[2]; 
+			$width = $filtered_pixel_width[2];
 		} else if ( $rating >= '1' ) {
-			$width = $filtered_pixel_width[1]; 
+			$width = $filtered_pixel_width[1];
 		} else if ( $rating <= '.9' ) {
 			$width = $filtered_pixel_width[0];
 		} else {
@@ -213,7 +208,7 @@ class Woocommerce_External_Product_Embed_Transients {
 
 		$ids = array();
 		foreach ( $recent_products as $product ) {
-			$ids[] = $product->id;
+			$ids[] = $product['id'];
 		}
 
 		return $ids;
