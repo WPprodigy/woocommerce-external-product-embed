@@ -43,10 +43,10 @@ class WCEPE_Shortcodes {
 	 */
 	public static function product_content_template( $product ) {
 		// Check if template has been overriden
-		if ( file_exists( get_stylesheet_directory() . '/woocommerce-external-product-embed/shortcodes/external-product-single.php' ) ) {
-			$template = get_stylesheet_directory() . '/woocommerce-external-product-embed/shortcodes/external-product-single.php';
+		if ( file_exists( get_stylesheet_directory() . '/wcepe/product-content.php' ) ) {
+			$template = get_stylesheet_directory() . '/wcepe/product-content.php';
 		} else {
-			$template = plugin_dir_path( dirname( __FILE__ ) ) . 'templates/shortcodes/external-product-single.php';
+			$template = plugin_dir_path( dirname( __FILE__ ) ) . 'templates/product-content.php';
 		}
 
 		include( $template );

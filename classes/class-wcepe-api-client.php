@@ -56,8 +56,7 @@ class WCEPE_API_Client {
 	 * Get products.
 	 */
 	public function get_products( $args = array() ) {
-		$wc_api = $this->connect();
-		print_r($args);
+		$wc_api  = $this->connect();
 		$results = $wc_api->get( 'products/', $args );
 
 		$products = array();
