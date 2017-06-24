@@ -1,0 +1,10 @@
+{
+  "name": "WPprodigy/woocommerce-external-product-embed",
+  "description": "Provides a shortcode to embed products from another store.",
+  "homepage": "https://calebburks.com/plugins/",
+  "type": "wordpress-plugin",
+  "license": "GPL-3.0+",
+  "require": {
+    "automattic/woocommerce": "^1.3"
+  }
+}

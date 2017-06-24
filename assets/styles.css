@@ -1,57 +1,95 @@
 .wcepe_external_products {
 	list-style-type: none;
 	margin-left: 0;
+	margin-bottom: 0;
+	clear: both;
 }
 
-.wcepe_external_product{ 
+.wcepe_external_products li:nth-child(3n + 1) {
+	clear: both !important;
+}
+
+.wcepe_external_product {
 	text-align: center;
 	width: 200px;
 	display: inline-block;
 	margin: 15px 13px;
+	width: 27.4%;
+	margin-right: 5.9%;
+	float: left;
+	list-style: none;
+	margin-left: 0;
+	margin-bottom: 3em;
+	position: relative;
 }
 
-.wcepe_external_product_image {
-	width: auto;
-}
-
-.wcepe_external_product_title {
-	margin: 5px 0 -1px 0;
-}
-
-.wcepe_external_product_price {
+.wcepe_external_product .woocommerce-LoopProduct-link {
 	display: block;
-	margin: 0 0 6px 0;
 }
 
-.wcepe_external_product_rating {
+.wcepe_external_product img {
+	width: auto;
+	display: block;
+	margin: 0 auto 1.618em;
+}
+
+.wcepe_external_product h2 {
+	font-size: 1rem;
+	font-weight: 400;
+	margin-bottom: .5407911001em;
+}
+
+.wcepe_external_product .onsale {
+    border: 1px solid;
+    border-color: #43454b;
+    color: #43454b;
+    padding: .202em .6180469716em;
+    font-size: .875em;
+    text-transform: uppercase;
+    font-weight: 600;
+    display: inline-block;
+    margin-bottom: 1em;
+    border-radius: 3px;
+}
+
+.wcepe_external_product .price {
+	display: block;
+	color: #6d6d6d;
+	font-weight: 400;
+	margin-bottom: 1rem;
+}
+
+.wcepe_external_product .star-rating {
 	position: relative;
 	font-size: 19px;
-	margin: 0 0 30px 0;
+	margin: 0 0 50px 0;
 	width: auto;
 	font-family: 'dashicons';
 }
 
-.wcepe_external_product_rating:before {
+.wcepe_external_product .star-rating:before {
 	content: "\f154\f154\f154\f154\f154";
 	color: #adb9bc;
-	position: absolute;
+	opacity: .25;
 	top: 0;
-	left: 52px;
+	left: 59px;
+	position: absolute;
 }
 
-.wcepe_external_product_rating span:before {
+.wcepe_external_product .star-rating span:before {
 	content: "\f155\f155\f155\f155\f155";
-	color: #f37324;
-	position: absolute;
 	top: 0;
+	position: absolute;
 	left: 0;
+	color: #2c2d33;
 }
 
-.wcepe_external_product_rating span {
+.wcepe_external_product .star-rating span {
 	overflow: hidden;
-	position: absolute;
 	font-size: 19px;
 	top: 0;
 	height: 25px;
-	left: 52px;
+	left: 59px;
+	position: absolute;
+	padding-top: 1.5em;
 }
