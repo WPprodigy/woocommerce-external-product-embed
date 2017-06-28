@@ -36,6 +36,8 @@
  *		[5] => button
  * 	)
  * )
+ *
+ * $wcepe_loop['class'] will output 'first' or 'last' for columns support.
  */
 
 if ( ! defined( 'ABSPATH' ) ) {
@@ -43,7 +45,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 ?>
 
-<li class="wcepe_external_product product">
+<li class="wcepe_external_product product <?php echo $wcepe_loop['class'] ?>">
 
 	<a href="<?php echo $product['link'] ?>" class="woocommerce-LoopProduct-link" target="_blank">
 

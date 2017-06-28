@@ -43,6 +43,10 @@ class WCEPE_Shortcodes {
 	 * Get the template file.
 	 */
 	public static function product_content_template( $product, $atts ) {
+		global $wcepe_loop;
+		$wcepe_loop['columns'] = absint( $atts['columns'] );
+		self::get_loop_class();
+
 		// Check if template has been overriden
 		if ( file_exists( get_stylesheet_directory() . '/wcepe/product-content.php' ) ) {
 			$template = get_stylesheet_directory() . '/wcepe/product-content.php';
@@ -54,14 +58,36 @@ class WCEPE_Shortcodes {
 	}
 
 	/**
+	 * Get classname for loops based on $wcepe_loop global.
+	 * Copied from WooCommerce core's `wc_get_loop_class` function.
+	 */
+	public static function get_loop_class() {
+		global $wcepe_loop;
+
+		$wcepe_loop['loop']    = ! empty( $wcepe_loop['loop'] ) ? $wcepe_loop['loop'] + 1   : 1;
+		$wcepe_loop['columns'] = max( 1, ! empty( $wcepe_loop['columns'] ) ? $wcepe_loop['columns'] : 4 );
+
+		if ( 0 === ( $wcepe_loop['loop'] - 1 ) % $wcepe_loop['columns'] || 1 === $wcepe_loop['columns'] ) {
+			$wcepe_loop['class'] = 'first';
+		} elseif ( 0 === $wcepe_loop['loop'] % $wcepe_loop['columns'] ) {
+			$wcepe_loop['class'] = 'last';
+		} else {
+			$wcepe_loop['class'] = '';
+		}
+	}
+
+	/**
 	 * Loop over products.
 	 */
 	private static function product_loop( $query_args, $atts ) {
 		$data_store = new WCEPE_Data_Store( $query_args );
 		$products = $data_store->get_loop_products();
 
-		wp_enqueue_style( 'wcepe-styles' );
-		wp_enqueue_style( 'dashicons' );
+		// Only add styles if WC isn't enabled.
+		if ( ! class_exists( 'WooCommerce' ) ) {
+			wp_enqueue_style( 'wcepe-styles' );
+			wp_enqueue_style( 'dashicons' );
+		}
 
 		ob_start();
 
@@ -78,8 +104,8 @@ class WCEPE_Shortcodes {
 
 		}
 
-		$opening = apply_filters( 'wcepe_products_loop_wrapper_open', '<div class="woocommerce wcepe_external_product_wrap"><ul class="products wcepe_external_products">' );
-		$closing = apply_filters( 'wcepe_products_loop_wrapper_close', '</ul></div>' );
+		$opening = apply_filters( 'wcepe_products_loop_wrapper_open', '<div class="woocommerce wcepe_external_product_wrap columns-' . $atts['columns'] . '"><ul class="products wcepe_external_products">', $atts );
+		$closing = apply_filters( 'wcepe_products_loop_wrapper_close', '</ul></div>', $atts );
 
 		return $opening . ob_get_clean() . $closing;
 	}
@@ -97,6 +123,7 @@ class WCEPE_Shortcodes {
 			'order'    => 'desc',
 			'number'   => 12,
 			'per_page' => 0,  // Will override 'number'
+			'columns'  => '4',
 			'ids'      => '', // Comma seperated IDs
 			'skus'     => '', // Comma seperated SKUs
 			'category' => '', // Comma seperated category IDs
