@@ -118,18 +118,18 @@ class WCEPE_Shortcodes {
 		}
 
 		$default_atts = apply_filters( 'wcepe_default_products_atts', array(
-			'orderby'  => 'title',
-			'order'    => 'desc',
+			'orderby'  => 'title', // title, menu_order, date, rand, or id.
+			'order'    => 'desc', // asc or desc
 			'number'   => 12,
 			'per_page' => 0,  // Will override 'number'
-			'columns'  => '4',
-			'ids'      => '', // Comma seperated IDs
-			'skus'     => '', // Comma seperated SKUs
-			'category' => '', // Comma seperated category IDs
+			'columns'  => '4', // 1-6
+			'ids'      => '', // Comma separated IDs
+			'skus'     => '', // Comma separated SKUs
+			'category' => '', // Comma separated category IDs
 			'recent'   => false,
 			'on_sale'  => false,
 			'featured' => false,
-			'hide'     => '', // image, title, rating, onsale, price, or button
+			'hide'     => '', // image, title, rating, onsale, price, and/or button
 			'button'   => __( 'View Product', 'woocommerce-external-product-embed' ) // Button text
 		) );
 
