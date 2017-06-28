@@ -86,7 +86,6 @@ class WCEPE_Shortcodes {
 		// Only add styles if WC isn't enabled.
 		if ( ! class_exists( 'WooCommerce' ) ) {
 			wp_enqueue_style( 'wcepe-styles' );
-			wp_enqueue_style( 'dashicons' );
 		}
 
 		ob_start();
@@ -104,7 +103,7 @@ class WCEPE_Shortcodes {
 
 		}
 
-		$opening = apply_filters( 'wcepe_products_loop_wrapper_open', '<div class="woocommerce wcepe_external_product_wrap columns-' . $atts['columns'] . '"><ul class="products wcepe_external_products">', $atts );
+		$opening = apply_filters( 'wcepe_products_loop_wrapper_open', '<div class="woocommerce wcepe_products_wrap columns-' . $atts['columns'] . '"><ul class="wcepe_products products">', $atts );
 		$closing = apply_filters( 'wcepe_products_loop_wrapper_close', '</ul></div>', $atts );
 
 		return $opening . ob_get_clean() . $closing;

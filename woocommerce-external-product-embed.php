@@ -96,7 +96,7 @@ class Woocommerce_External_Product_Embed {
 	 * Register the stylesheet
 	 */
 	public function register_styles() {
-		wp_register_style( 'wcepe-styles', plugins_url( 'assets/styles.css', plugin_basename( __FILE__ ) ) );
+		wp_register_style( 'wcepe-styles', plugins_url( 'assets/styles/styles.css', plugin_basename( __FILE__ ) ) );
 	}
 
 }

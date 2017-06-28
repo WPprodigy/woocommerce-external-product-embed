@@ -45,7 +45,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 ?>
 
-<li class="wcepe_external_product product <?php echo $wcepe_loop['class'] ?>">
+<li class="wcepe_product product <?php echo $wcepe_loop['class'] ?>">
 
 	<a href="<?php echo $product['link'] ?>" class="woocommerce-LoopProduct-link" target="_blank">
 
