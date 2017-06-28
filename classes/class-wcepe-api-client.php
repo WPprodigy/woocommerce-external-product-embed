@@ -47,6 +47,7 @@ class WCEPE_API_Client {
 		// Try to get the latest product to test the connection.
 		try {
 			$wc_api->get( 'products/', array( 'per_page' => 1 ) );
+			return 'success';
 		} catch ( HttpClientException $e ) {
 			return $e->getMessage();
 		}

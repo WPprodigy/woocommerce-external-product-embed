@@ -50,13 +50,13 @@ class Woocommerce_External_Product_Embed {
 		// Add plugin action links
 		add_filter( 'plugin_action_links_' . plugin_basename( __FILE__ ), array( $this, 'plugin_action_links' ) );
 
+		// Autoloader for the external "WooCommerce API - PHP Client".
+		include_once( __DIR__ . '/vendor/autoload.php' );
+
 		// Frontend Only
 		if ( ( ! is_admin() || defined( 'DOING_AJAX' ) ) && ! defined( 'DOING_CRON' ) ) {
 			// Register Styles
 			add_action( 'wp_enqueue_scripts', array( $this, 'register_styles' ) );
-
-			// Autoloader for the external "WooCommerce API - PHP Client".
-			include_once( __DIR__ . '/vendor/autoload.php' );
 
 			// Shortcodes Class
 			include_once( dirname( __FILE__ ) . '/classes/class-wcepe-shortcodes.php' );
