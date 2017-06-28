@@ -73,8 +73,8 @@ class WCEPE_API_Client {
 		}
 	}
 
-  /**
-	 * Get a the data we need from a product.
+	/**
+	 * Get the data we need from a product.
 	 */
 	public function get_product_data( $product ) {
 		// List of values we need from the API for a single product.

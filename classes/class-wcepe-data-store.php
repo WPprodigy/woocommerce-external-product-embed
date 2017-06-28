@@ -109,7 +109,7 @@ class WCEPE_Data_Store {
 
 	/**
 	 * Convert number into a pixel width for the stars.
-	 *TODO: Find a better way.
+	 * TODO: Find a better way.
 	 */
 	private function prepare_product_rating( $rating ) {
 		// Can be filtered for different themes/styles.
