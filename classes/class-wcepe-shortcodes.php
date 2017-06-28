@@ -35,13 +35,13 @@ class WCEPE_Shortcodes {
 
 		require_once 'class-wcepe-data-store.php';
 
-		add_action( 'wcepe_product_content_template', __CLASS__ . '::product_content_template', 10 );
+		add_action( 'wcepe_product_content_template', __CLASS__ . '::product_content_template', 10, 2 );
 	}
 
 	/**
 	 * Get the template file.
 	 */
-	public static function product_content_template( $product ) {
+	public static function product_content_template( $product, $atts ) {
 		// Check if template has been overriden
 		if ( file_exists( get_stylesheet_directory() . '/wcepe/product-content.php' ) ) {
 			$template = get_stylesheet_directory() . '/wcepe/product-content.php';
@@ -66,14 +66,14 @@ class WCEPE_Shortcodes {
 
 		if ( $products ) {
 
-			do_action( "wcepe_shortcode_before_products_loop", $atts );
+			do_action( 'wcepe_shortcode_before_products_loop', $atts );
 
 			foreach ( $products as $product ) {
 				// product_content_template - priority 10.
-				do_action( 'wcepe_product_content_template', $product );
+				do_action( 'wcepe_product_content_template', $product, $atts );
 			}
 
-			do_action( "wcepe_shortcode_after_products_loop", $atts );
+			do_action( 'wcepe_shortcode_after_products_loop', $atts );
 
 		}
 
@@ -84,7 +84,7 @@ class WCEPE_Shortcodes {
 	}
 
 	/**
-	 * Shortcode. Show a single product, or list multiple products by SKU or ID.
+	 * Shortcode. Go through the attributes and send the query args to the product_loop().
 	 */
 	 public static function products( $atts ) {
 		if ( empty( $atts ) ) {
@@ -96,12 +96,14 @@ class WCEPE_Shortcodes {
 			'order'    => 'desc',
 			'number'   => 12,
 			'per_page' => 0,  // Will override 'number'
-			'ids'      => '', // Comma-seperated IDs
-			'skus'     => '', // Comma-seperated SKUs
-			'category' => '', // Comma-seperated Cat IDs
+			'ids'      => '', // Comma seperated IDs
+			'skus'     => '', // Comma seperated SKUs
+			'category' => '', // Comma seperated category IDs
 			'recent'   => false,
 			'on_sale'  => false,
-			'featured' => false
+			'featured' => false,
+			'hide'     => '', // image, title, rating, onsale, price, or button
+			'button'   => __( 'View Product', 'woocommerce-external-product-embed' ) // Button text
 		) );
 
 		$atts = shortcode_atts( $default_atts, $atts, 'wcepe_products' );
@@ -122,14 +124,14 @@ class WCEPE_Shortcodes {
 		}
 
 		if ( ! empty( $atts['skus'] ) ) {
-			// WC Core won't accept an array. So we need to clear out all whitespace.
+			// WC Core won't accept an array. We need to clear out all whitespace then convert back to comma list.
 			$skus = implode( ",", array_map( 'trim', explode( ',', $atts['skus'] ) ) );
 			$query_args['sku'] = $skus;
 			$min_per_page += count( explode( ',', $skus ) );
 		}
 
 		if ( ! empty( $atts['category'] ) ) {
-			// WC Core won't accept an array. So we need to clear out all whitespace.
+			// Same as SKUs above. Clear out all whitespace then convert back to comma list.
 			$category_ids = implode( ",", array_map( 'trim', explode( ',', $atts['category'] ) ) );
 			$query_args['category'] = $category_ids;
 		}
@@ -155,6 +157,12 @@ class WCEPE_Shortcodes {
 		// Ensure enough products are shown if IDs or SKUs were manually entered.
 		if ( $query_args['per_page'] < $min_per_page ) {
 			$query_args['per_page'] =  absint( $min_per_page );
+		}
+
+		// Used to hide certain product parts in the template.
+		$atts['parts_to_hide'] = array();
+		if ( ! empty( $atts['hide'] ) ) {
+			$atts['parts_to_hide'] = array_map( 'trim', explode( ',', strtolower( $atts['hide'] ) ) );
 		}
 
 		return self::product_loop( $query_args, $atts );

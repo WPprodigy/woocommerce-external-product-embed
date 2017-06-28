@@ -38,7 +38,7 @@ class WCEPE_Data_Store {
 	 * Hashed key, taken from the query args that retrieved the products.
 	 */
 	public function get_transient_name() {
-		return 'wcepe_loop_' . substr( md5( json_encode( $this->query_args  ) ), 24 );
+		return 'wcepe_loop_' . substr( md5( json_encode( $this->query_args ) ), 24 );
 	}
 
 	/**
