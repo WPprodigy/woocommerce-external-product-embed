@@ -55,6 +55,16 @@
 	width: 13.5%;
 }
 
+@media ( max-width: 768px ) {
+	.wcepe_products_wrap li.wcepe_product {
+		width: 100%;
+	}
+
+	.wcepe_products_wrap li.wcepe_product img {
+		max-width: 300px;
+	}
+}
+
 /**
  * Products loop - styles
  */
@@ -98,7 +108,7 @@ li.wcepe_product img {
 	vertical-align: middle;
 	height: auto;
 	display: block;
-	margin: 0 0 1em;
+	margin: 0 auto 1.618em;
 	box-shadow: none;
 }
 
