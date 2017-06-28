@@ -33,9 +33,10 @@ class WCEPE_Shortcodes {
 			add_shortcode( apply_filters( "{$shortcode}_shortcode_tag", $shortcode ), $function );
 		}
 
+		// Data Store - used for getting products from the rest api.
 		require_once 'class-wcepe-data-store.php';
 
-		add_action( 'wcepe_product_content_template', __CLASS__ . '::product_content_template', 10, 2 );
+		add_action( 'wcepe_product_content_template', array( __CLASS__, 'product_content_template' ), 10, 2 );
 	}
 
 	/**

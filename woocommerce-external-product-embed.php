@@ -61,6 +61,10 @@ class Woocommerce_External_Product_Embed {
 			// Shortcodes Class
 			include_once( dirname( __FILE__ ) . '/classes/class-wcepe-shortcodes.php' );
 			add_action( 'init', array( 'WCEPE_Shortcodes', 'init' ) );
+
+			// Deprecated Class - Backwards Compatability
+			include_once( dirname( __FILE__ ) . '/classes/class-wcepe-deprecated.php' );
+			add_action( 'init', array( 'WCEPE_Deprecated', 'init' ) );
 		}
 
 		// Load Admin
