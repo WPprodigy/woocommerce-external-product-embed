@@ -109,6 +109,7 @@ li.wcepe_product h2 {
 }
 
 li.wcepe_product .star-rating {
+	color: #2c2d33;
 	overflow: hidden;
 	position: relative;
 	height: 1.618em;

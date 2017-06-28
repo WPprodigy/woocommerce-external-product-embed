@@ -19,7 +19,7 @@
  * )
  * 	[price]   => $2.00 (contains html and sale prices)
  * 	[link]    => https://example.com/product/woo-product/
- * 	[rating]  => 77px
+ * 	[rating]  => Rated 5 out of 5 (contains html)
  * 	[on_sale] => 1
  * )
  *
@@ -58,9 +58,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 		<?php endif; ?>
 
 		<?php if ( $product['rating'] && ! in_array( 'rating', $atts['parts_to_hide'] ) ) : ?>
-			<p class="star-rating">
-				<span style="width:<?php echo $product['rating'] ?>"></span>
-			</p>
+			<div class="star-rating"><?php echo $product['rating'] ?></div>
 		<?php endif; ?>
 
 		<?php if ( $product['on_sale'] && ! in_array( 'onsale', $atts['parts_to_hide'] ) ) : ?>

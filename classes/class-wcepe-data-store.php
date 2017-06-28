@@ -108,37 +108,19 @@ class WCEPE_Data_Store {
 	}
 
 	/**
-	 * Convert number into a pixel width for the stars.
-	 * TODO: Find a better way.
+	 * Convert rating number into html with percentage for the stars.
+	 * Copied from WC core's `wc_get_star_rating_html` function.
 	 */
 	private function prepare_product_rating( $rating ) {
-		// Can be filtered for different themes/styles.
-		$pixel_widths = apply_filters( 'wcepe_product_rating_widths', array(
-			'5'  => '99px',
-			'4'  => '77px',
-			'3'  => '58px',
-			'2'  => '38px',
-			'1'  => '20px',
-			'0'  => '0'
-		) );
-
-		if ( $rating >= '5' ) {
-			$width = $pixel_widths[5];
-		} else if ( $rating >= '4' ) {
-			$width = $pixel_widths[4];
-		} else if ( $rating >= '3' ) {
-			$width = $pixel_widths[3];
-		} else if ( $rating >= '2' ) {
-			$width = $pixel_widths[2];
-		} else if ( $rating >= '1' ) {
-			$width = $pixel_widths[1];
-		} else if ( $rating <= '.9' ) {
-			$width = $pixel_widths[0];
-		} else {
-			$width = $pixel_widths[0];
+		if ( 0 == $rating ) {
+			return 0;
 		}
 
-		return $width;
+		$html = '<span style="width:' . ( ( $rating / 5 ) * 100 ) . '%">';
+		$html .= sprintf( esc_html__( 'Rated %s out of 5', 'woocommerce-external-product-embed' ), '<strong class="rating">' . esc_html( $rating ) . '</strong>' );
+		$html .= '</span>';
+
+		return $html;
 	}
 
 	/**
