@@ -123,9 +123,9 @@ class WCEPE_Shortcodes {
 			'number'   => 12,
 			'per_page' => 0,  // Will override 'number'
 			'columns'  => '4', // 1-6
-			'ids'      => '', // Comma separated IDs
-			'skus'     => '', // Comma separated SKUs
-			'category' => '', // Comma separated category IDs
+			'ids'      => '', // comma separated IDs
+			'skus'     => '', // comma separated SKUs
+			'category' => '', // comma separated category IDs
 			'recent'   => false,
 			'on_sale'  => false,
 			'featured' => false,

@@ -1,6 +1,8 @@
 # WooCommerce External Product Embed
 This plugin provides a shortcode to embed products from a separate store on your site. It connects to another website running WooCommerce, and displays products from that site through the use of a shortcode.
 
+Here is a screenshot of the products being displayed on the [frontend](http://cld.wthms.co/4TlMMw) and the settings in the [backend](http://cld.wthms.co/CeLShM).
+
 ## Installation
 1. Go to the [releases tab](https://github.com/WPprodigy/woocommerce-external-product-embed/releases) in this repo.
 2. Find the "Latest release" and click to download `woocommerce-external-product-embed.zip`.
@@ -15,7 +17,7 @@ This plugin provides a shortcode to embed products from a separate store on your
 
 ## Usage
 
-The shortcode you can use to embed products onto your WordPress pages/posts is `[wcepe_products]`. Just using this shortcode on a page won't do anything though by default, you need add shortcode attributes to tell it what products you want to show.
+The shortcode you can use to embed products onto your WordPress pages/posts is `[wcepe_products]`. Just using this shortcode on a page won't do anything though by default, you will need to add attributes to tell the shortcode what products you want to show.
 
 You can show specific products by listing the IDs or SKUs like this:
 - `[wcepe_products ids='96,99']`
@@ -41,7 +43,7 @@ There are some additional attributes that can also effect what is displayed.
 - `hide` - List certain parts of the product display you would like to hide. Can be set to image, title, rating, onsale, price, and/or button.
 
 An example shortcode using the above attributes would look like this:
-[wcepe_products orderby='title' order='desc' number='12' columns='4' hide='image,rating,onsale' number=12 button='View Product']
+- `[wcepe_products orderby='title' order='desc' number='12' columns='4' hide='image,rating,onsale' number=12 button='View Product']`
 
 You of course don't need to type all of that out every time. Here are the default settings for each attribute, along with the options:
 
@@ -56,9 +58,9 @@ You of course don't need to type all of that out every time. Here are the defaul
 'hide'     => '', // image, title, rating, onsale, price, and/or button
 'button'   => 'View Product',
 
-'ids'      => '', // Comma separated IDs
-'skus'     => '', // Comma separated SKUs
-'category' => '', // Comma separated category IDs
+'ids'      => '', // comma separated IDs
+'skus'     => '', // comma separated SKUs
+'category' => '', // comma separated category IDs
 ```
 
 Note that some attributes can contradict each other. For example, using a list of `ids` and `skus` in the same shortcode will result in products only showing if both an ID and a SKU match for it.
