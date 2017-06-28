@@ -73,8 +73,11 @@ class WCEPE_Data_Store {
 			$data[] = $this->prepare_product_data( $product );
 		}
 
-		// Create wcepe_loop_* transient.
-		set_transient( $this->get_transient_name(), $data, $this->get_transient_time() );
+		$transient_set_time = $this->get_transient_time();
+		if ( '0' != $transient_set_time ) {
+			// Create wcepe_loop_* transient.
+			set_transient( $this->get_transient_name(), $data, $transient_set_time );
+		}
 
 		return $data;
 	}

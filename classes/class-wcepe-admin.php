@@ -153,7 +153,7 @@ class WCEPE_Admin {
 	public static function transients_set_time() {
 		$options = get_option( 'wcepe_settings' ); ?>
 		<input type='text' class="regular-text wcepe_transients_set_time" name='wcepe_settings[wcepe_transient_time]' placeholder="86400" value='<?php echo $options['wcepe_transient_time']; ?>'>
-		<div><?php _e( 'This option defaults to 86400 seconds, equal to one day.', 'woocommerce-external-product-embed' ) ?></div>
+		<div><?php _e( 'This option defaults to 86400 seconds, equal to one day. Setting to 0 will disable transients from being created (not recommended).', 'woocommerce-external-product-embed' ) ?></div>
 		<?php
 	}
 
