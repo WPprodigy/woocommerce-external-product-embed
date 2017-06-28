@@ -82,7 +82,7 @@ class Woocommerce_External_Product_Embed {
 	 */
 	public function plugin_action_links( $links ) {
 		$action_links = array(
-			'settings' => '<a href="' . admin_url( 'options-general.php?page=embed_external_woocommerce_products' ) . '" aria-label="' . esc_attr( __( 'View settings', 'woocommerce-external-product-embed' ) ) . '">' . __( 'Settings', 'woocommerce-external-product-embed' ) . '</a>',
+			'settings' => '<a href="' . admin_url( 'options-general.php?page=wc_external_product_embed' ) . '" aria-label="' . esc_attr( __( 'View settings', 'woocommerce-external-product-embed' ) ) . '">' . __( 'Settings', 'woocommerce-external-product-embed' ) . '</a>',
 		);
 
 		return array_merge( $action_links, $links );

@@ -31,7 +31,7 @@ class WCEPE_Admin {
 	public static function add_menu_item() {
 		add_options_page( __( 'WooCommerce External Product Embed', 'woocommerce-external-product-embed' ),
 			__( 'WooCommerce External Products', 'woocommerce-external-product-embed' ),
-			'manage_options', 'embed_external_woocommerce_products', array( __CLASS__, 'wcepe_options_page' ) );
+			'manage_options', 'wc_external_product_embed', array( __CLASS__, 'wcepe_options_page' ) );
 	}
 
 	/**
@@ -155,7 +155,7 @@ class WCEPE_Admin {
 	 */
 	public static function delete_all_transients() {
 		$options = get_option( 'wcepe_settings' );
-		$delete_url = wp_nonce_url( admin_url( 'options-general.php?page=embed_external_woocommerce_products&action=clear_transients' ), 'wcepe_clear_transients' ); ?>
+		$delete_url = wp_nonce_url( admin_url( 'options-general.php?page=wc_external_product_embed&action=clear_transients' ), 'wcepe_clear_transients' ); ?>
 		<a href="<?php echo $delete_url; ?>" class="button"><?php echo __( 'Clear Transients', 'wcepe' ); ?></a>
 		<div><?php _e( 'This will force all products to be updated, even if the "set time" has not run out.', 'woocommerce-external-product-embed' ) ?></div>
 		<?php
