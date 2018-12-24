@@ -27,7 +27,8 @@ class WCEPE_API_Client {
 		$settings = get_option( 'wcepe_settings' );
 		$options  = [
 			'wp_api' => true,
-			'version' => 'wc/v2'
+			'version' => 'wc/v2',
+                        'query_string_auth' => true
 		];
 
 		return new Client(
